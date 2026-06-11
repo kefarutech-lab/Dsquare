@@ -1,0 +1,82 @@
+/* ── DSQUARE BRAND FONTS ─────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── CSS VARIABLES (Brand Tokens) ───────────────────────────── */
+:root {
+  --clay:            #B17457;
+  --clay-light:      #C4896A;
+  --clay-dark:       #8A5A3F;
+  --limestone:       #D9D3C3;
+  --limestone-light: #EDE9DF;
+  --ds-white:        #FFFFFF;
+  --ds-black:        #0F0D0C;
+  --ds-dark:         #1C1714;
+  --ds-charcoal:     #2C2420;
+}
+
+/* ── RESET & BASE ────────────────────────────────────────────── */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: clip;
+}
+
+body {
+  background-color: var(--ds-dark);
+  color: var(--limestone);
+  font-family: 'Barlow', system-ui, sans-serif;
+  font-weight: 300;
+  overflow-x: clip;
+  overscroll-behavior-x: none;
+  line-height: 1.6;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* ── TYPOGRAPHY DEFAULTS ────────────────────────────────────── */
+h1, h2, h3, h4, h5 {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 400;
+  color: var(--limestone-light);
+}
+
+/* ── SCROLL LINE ANIMATION ──────────────────────────────────── */
+@keyframes scroll-line {
+  0%   { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
+.animate-scroll-line {
+  animation: scroll-line 1.6s ease-in-out infinite;
+}
+
+/* ── SELECTION COLOR ────────────────────────────────────────── */
+::selection {
+  background-color: var(--clay);
+  color: var(--ds-white);
+}
+
+/* ── SCROLLBAR ──────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: var(--ds-dark);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--clay);
+  border-radius: 2px;
+}

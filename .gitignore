@@ -1,0 +1,20 @@
+node_modules/
+client/node_modules/
+server/node_modules/
+client/dist/
+dist/
+
+# Environment files — never commit these
+.env
+.env.*
+server/.env
+!.env.example
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.local

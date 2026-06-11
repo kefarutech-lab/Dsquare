@@ -1,0 +1,39 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm create:*)",
+      "Bash(npm install:*)",
+      "Bash(npx tailwindcss:*)",
+      "Bash(mkdir -p e:/Dsquare/server/routes e:/Dsquare/server/controllers)",
+      "Bash(npm init:*)",
+      "Bash(npm run:*)",
+      "Bash(New-Item -ItemType Directory -Force -Path \"e:\\\\Dsquare\\\\client\\\\src\\\\assets\\\\interior\\\\residential\", \"e:\\\\Dsquare\\\\client\\\\src\\\\assets\\\\interior\\\\bedrooms\", \"e:\\\\Dsquare\\\\client\\\\src\\\\assets\\\\interior\\\\kitchen\", \"e:\\\\Dsquare\\\\client\\\\src\\\\assets\\\\interior\\\\bungalow\", \"e:\\\\Dsquare\\\\client\\\\src\\\\assets\\\\commercial\\\\offices\", \"e:\\\\Dsquare\\\\client\\\\src\\\\assets\\\\commercial\\\\showrooms\", \"e:\\\\Dsquare\\\\client\\\\src\\\\assets\\\\commercial\\\\service-centre\", \"e:\\\\Dsquare\\\\client\\\\src\\\\assets\\\\hospitality\\\\hotel\", \"e:\\\\Dsquare\\\\client\\\\src\\\\assets\\\\hospitality\\\\cafe\", \"e:\\\\Dsquare\\\\client\\\\src\\\\assets\\\\development\")",
+      "Bash(Out-Null)",
+      "Bash(Write-Host \"Folders created\")",
+      "PowerShell(New-Item -ItemType Directory -Force \"e:\\\\Dsquare\\\\client\\\\src\\\\assets\\\\projects\\\\ttura\\\\gallery\")",
+      "PowerShell(New-Item -ItemType Directory -Force \"e:\\\\Dsquare\\\\client\\\\src\\\\assets\\\\projects\\\\finup-consultancy\\\\gallery\")",
+      "PowerShell(New-Item -ItemType Directory -Force \"e:\\\\Dsquare\\\\client\\\\src\\\\assets\\\\projects\\\\ca-official\\\\gallery\")",
+      "PowerShell(Rename-Item \"e:\\\\Dsquare\\\\client\\\\src\\\\assets\\\\projects\\\\ttura\" \"tura\")",
+      "PowerShell(New-Item -ItemType Directory -Force \"e:\\\\Dsquare\\\\client\\\\src\\\\assets\\\\projects\\\\tura\\\\gallery\")",
+      "PowerShell(New-Item -ItemType Directory -Force \"e:\\\\Dsquare\\\\client\\\\src\\\\assets\\\\before-after\")",
+      "PowerShell(New-Item -ItemType Directory -Force \"e:\\\\Dsquare\\\\client\\\\src\\\\assets\\\\projects\\\\savitri-corps\\\\gallery\")",
+      "PowerShell(New-Item -ItemType Directory -Force \"e:\\\\Dsquare\\\\client\\\\src\\\\assets\\\\team\\\\prayag-bhandari\")",
+      "PowerShell(New-Item -ItemType Directory -Force \"e:\\\\Dsquare\\\\client\\\\src\\\\assets\\\\team\\\\kunal-singh\")",
+      "PowerShell(New-Item -ItemType Directory -Force \"e:\\\\Dsquare\\\\client\\\\src\\\\assets\\\\team\\\\deshana\")",
+      "PowerShell(New-Item -ItemType Directory -Force \"e:\\\\Dsquare\\\\client\\\\src\\\\assets\\\\about\")",
+      "PowerShell(New-Item -ItemType Directory -Force \"e:\\\\Dsquare\\\\client\\\\src\\\\assets\\\\brands\")",
+      "Bash(powershell -Command \"Write-Host 'CLIENT:'; Get-ChildItem 'e:\\\\Dsquare\\\\client' -Force | Select-Object Name; Write-Host ''; Write-Host 'SERVER:'; Get-ChildItem 'e:\\\\Dsquare\\\\server' -Force | Select-Object Name\")",
+      "Bash(powershell -Command \"Get-ChildItem 'e:\\\\Dsquare\\\\client' -Recurse -Depth 0 -Force | Select-Object Name\")",
+      "Bash(powershell -Command \"Get-ChildItem 'e:\\\\Dsquare\\\\server' -Recurse -Depth 1 | Select-Object Name\")",
+      "Bash(powershell -Command \"Get-ChildItem 'e:\\\\Dsquare\\\\server\\\\routes' | Select-Object Name\")",
+      "Bash(powershell -Command \"Get-ChildItem 'e:\\\\Dsquare\\\\server\\\\controllers' | Select-Object Name\")",
+      "Bash(powershell -Command \"Get-ChildItem 'e:\\\\Dsquare\\\\client\\\\src' -Recurse | Select-Object FullName\")",
+      "PowerShell($size = \\(Get-ChildItem 'e:\\\\Dsquare\\\\client\\\\src\\\\assets' -Recurse | Measure-Object -Property Length -Sum\\).Sum; Write-Host \"Total assets size: $\\([math]::Round\\($size/1MB, 2\\)\\)MB\")",
+      "PowerShell(Get-ChildItem 'e:\\\\Dsquare\\\\client' -Force | Where-Object {$_.Name -eq 'dist'} | Select-Object Name)",
+      "PowerShell(Get-ChildItem 'e:\\\\Dsquare' -Force | Select-Object Name, @{Name='Type';Expression={if\\($_.PSIsContainer\\){'DIR'}else{'FILE'}}})",
+      "PowerShell(Get-ChildItem 'e:\\\\Dsquare\\\\client' -Force | Where-Object {$_.Name -match 'dist'})",
+      "PowerShell(Get-ChildItem 'e:\\\\Dsquare\\\\client\\\\dist' | Select-Object Name, @{Name='Size';Expression={$_.Length}} | head -20)",
+      "PowerShell(Get-ChildItem 'e:\\\\Dsquare\\\\client\\\\dist' | Select-Object Name, @{Name='Size';Expression={$_.Length}} | Select-Object -First 20)"
+    ]
+  }
+}
