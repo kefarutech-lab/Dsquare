@@ -3,7 +3,7 @@ module.exports = {
     {
       name: "dsquare-server",
       script: "./server/server.js",
-      cwd: "/home/kefaru/dsquare",
+      cwd: "/var/www/Dsquare",
       instances: 1,
       autorestart: true,
       watch: false,
