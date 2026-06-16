@@ -2,12 +2,12 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import hero1 from "../assets/hero/hero1.jpg";
-import hero2 from "../assets/hero/hero2.jpg";
-import hero3 from "../assets/hero/hero3.jpg";
-import hero4 from "../assets/hero/hero4.jpg";
-import hero5 from "../assets/hero/hero5.jpg";
-import hero6 from "../assets/hero/hero6.jpg";
+import hero1 from "../assets/hero/hero1.avif";
+import hero2 from "../assets/hero/hero2.avif";
+import hero3 from "../assets/hero/hero3.avif";
+import hero4 from "../assets/hero/hero4.avif";
+import hero5 from "../assets/hero/hero5.avif";
+import hero6 from "../assets/hero/hero6.avif";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -156,12 +156,12 @@ export default function Portfolio() {
   };
 
   return (
-    <section ref={sectionRef} className="bg-[#0F0D0C] py-28 lg:py-40">
+    <section ref={sectionRef} className="bg-[#0F0D0C] py-10 lg:py-40">
       <div className="max-w-[1400px] mx-auto px-5 lg:px-12">
 
         {/* ── Header ───────────────────────────────────────────── */}
-        <div className="mb-14 lg:mb-20">
-          <div ref={tagRef} className="flex items-center gap-3 mb-5">
+        <div className="mb-6 lg:mb-20">
+          <div ref={tagRef} className="flex items-center gap-3 mb-0">
           </div>
           {/* Single-line heading with left→right wipe reveal */}
           <div className="overflow-hidden">
@@ -222,17 +222,17 @@ export default function Portfolio() {
               {FEATURED.map((project, i) => (
                 <div
                   key={project.slug}
-                  className="grid grid-cols-1 lg:grid-cols-[1.5fr_1fr] gap-8 lg:gap-16 items-center flex-shrink-0 px-2 lg:px-4"
+                  className="grid grid-cols-1 lg:grid-cols-[1.5fr_1fr] gap-5 lg:gap-16 items-center flex-shrink-0 px-2 lg:px-4"
                   style={{ width: "100%" }}
                 >
                   {/* ── Images ── */}
-                  <div className="grid grid-cols-2 gap-2 lg:gap-3 h-[280px] sm:h-[380px] lg:h-[480px]">
+                  <div className="grid grid-cols-2 gap-2 lg:gap-3 h-[220px] sm:h-[380px] lg:h-[480px]">
                     <div className="relative overflow-hidden group">
                       <img src={project.images[0]} alt={project.name} draggable={false}
                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                       <div className="absolute inset-0 bg-[#0F0D0C]/15" />
                     </div>
-                    <div className="relative overflow-hidden group mt-10 lg:mt-16">
+                    <div className="relative overflow-hidden group mt-6 lg:mt-16">
                       <img src={project.images[1]} alt={project.name} draggable={false}
                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                       <div className="absolute inset-0 bg-[#0F0D0C]/15" />
@@ -240,7 +240,7 @@ export default function Portfolio() {
                   </div>
 
                   {/* ── Content ── */}
-                  <div className="flex flex-col gap-5 py-4 lg:py-0">
+                  <div className="flex flex-col gap-3 py-1 lg:py-0">
 
                     <h3
                       className="font-display text-[#EDE9DF] leading-tight"
@@ -251,7 +251,7 @@ export default function Portfolio() {
 
                     <div className="w-10 h-px bg-[#B17457]" />
 
-                    <p className="font-sans text-[#D9D3C3]/72 text-sm font-light leading-loose max-w-sm">
+                    <p className="hidden lg:block font-sans text-[#D9D3C3]/72 text-sm font-light leading-loose max-w-sm">
                       {project.desc}
                     </p>
 
@@ -274,7 +274,7 @@ export default function Portfolio() {
         </div>
 
         {/* ── Dots + counter ───────────────────────────────────── */}
-        <div className="flex items-center justify-between mt-8">
+        <div className="flex items-center justify-between mt-3 lg:mt-8">
           <div className="flex items-center gap-2">
             {FEATURED.map((_, i) => (
               <button

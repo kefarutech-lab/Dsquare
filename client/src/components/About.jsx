@@ -2,7 +2,7 @@
 import { Link } from "react-router-dom";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import _fallbackAbout from "../assets/hero/hero3.jpg";
+import _fallbackAbout from "../assets/hero/hero3.avif";
 
 /* Drop your image into: client/src/assets/about/  (any filename) */
 const _aboutGlob = import.meta.glob("../assets/about/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}", { eager: true });
@@ -165,7 +165,7 @@ export default function About() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="bg-[#0F0D0C] py-28 lg:py-36 overflow-hidden">
+    <section ref={sectionRef} className="bg-[#0F0D0C] pt-8 pb-16 lg:py-36 overflow-hidden">
       <div className="max-w-[1400px] mx-auto px-5 lg:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-[2fr_3fr] gap-16 lg:gap-24 items-center">
 

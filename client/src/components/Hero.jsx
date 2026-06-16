@@ -1,12 +1,12 @@
 ﻿import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import gsap from "gsap";
-import hero1 from "../assets/hero/hero1.jpg";
-import hero2 from "../assets/hero/hero2.jpg";
-import hero3 from "../assets/hero/hero3.jpg";
-import hero4 from "../assets/hero/hero4.jpg";
-import hero5 from "../assets/hero/hero5.jpg";
-import hero6 from "../assets/hero/hero6.jpg";
+import hero1 from "../assets/hero/hero1.avif";
+import hero2 from "../assets/hero/hero2.avif";
+import hero3 from "../assets/hero/hero3.avif";
+import hero4 from "../assets/hero/hero4.avif";
+import hero5 from "../assets/hero/hero5.avif";
+import hero6 from "../assets/hero/hero6.avif";
 
 const SLIDES = [
   { img: hero1, label: "Living Spaces" },
@@ -131,7 +131,7 @@ export default function Hero() {
 
 
   return (
-    <section className="relative w-full h-screen overflow-hidden bg-[#0F0D0C]">
+    <section className="relative w-full h-[70vh] lg:h-screen overflow-hidden bg-[#0F0D0C]">
 
       {/* ── Images ──────────────────────────────────────────── */}
       {SLIDES.map((slide, i) => (
@@ -153,13 +153,13 @@ export default function Hero() {
 
       {/* ── Content ──────────────────────────────────────────── */}
       <div className="absolute inset-0 z-20 flex flex-col justify-end">
-        <div className="max-w-[1400px] mx-auto w-full px-5 lg:px-12 pb-8 lg:pb-12">
+        <div className="max-w-[1400px] mx-auto w-full px-5 lg:px-12 pb-6 lg:pb-12">
 
 
           {/* Heading */}
           <h1
             ref={headingRef}
-            className="font-display mb-6 overflow-hidden"
+            className="font-display mb-4 lg:mb-6 overflow-hidden"
             style={{ fontSize: "clamp(2.8rem, 7vw, 6.5rem)", lineHeight: 1.05, letterSpacing: "-0.02em", fontWeight: 700 }}
           >
             <span className="block text-[#EDE9DF]">Where Space</span>
@@ -169,12 +169,12 @@ export default function Hero() {
           </h1>
 
           {/* Divider */}
-          <div ref={lineRef} className="w-16 h-px bg-[#B17457]/60 mb-6" style={{ transformOrigin: "left center" }} />
+          <div ref={lineRef} className="w-16 h-px bg-[#B17457]/60 mb-4 lg:mb-6" style={{ transformOrigin: "left center" }} />
 
           {/* Subtext */}
           <p
             ref={subRef}
-            className="font-sans text-[#D9D3C3]/70 font-light mb-10 max-w-md"
+            className="font-sans text-[#D9D3C3]/70 font-light mb-6 lg:mb-10 max-w-md"
             style={{ fontSize: "clamp(0.875rem, 1.4vw, 1rem)", lineHeight: 1.8 }}
           >
             We craft interiors that merge elegance with intention —

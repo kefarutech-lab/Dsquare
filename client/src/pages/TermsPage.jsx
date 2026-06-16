@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import hero1 from "../assets/hero/hero1.jpg";
+import hero1 from "../assets/hero/hero1.avif";
 
 gsap.registerPlugin(ScrollTrigger);
 

@@ -2,9 +2,9 @@
 import { Link } from "react-router-dom";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import hero1 from "../assets/hero/hero1.jpg";
-import hero3 from "../assets/hero/hero3.jpg";
-import hero6 from "../assets/hero/hero6.jpg";
+import hero1 from "../assets/hero/hero1.avif";
+import hero3 from "../assets/hero/hero3.avif";
+import hero6 from "../assets/hero/hero6.avif";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -101,6 +101,18 @@ const TEAM = [
     role:     "Interior Designer",
     initials: "D",
     photo:    teamPhoto(import.meta.glob("../assets/team/deshana/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}", { eager: true })),
+  },
+  {
+    name:     "Rajat Deshmukh",
+    role:     "Project Engineer",
+    initials: "RD",
+    photo:    teamPhoto(import.meta.glob("../assets/team/rajat-deshmukh/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}", { eager: true })),
+  },
+  {
+    name:     "Jui Shelke",
+    role:     "Senior Interior Designer",
+    initials: "JS",
+    photo:    teamPhoto(import.meta.glob("../assets/team/jui-shelke/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}", { eager: true })),
   },
 ];
 
@@ -522,7 +534,7 @@ function TeamSection() {
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 lg:gap-10 max-w-[900px] mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-6 lg:gap-8 max-w-[1200px] mx-auto">
           {TEAM.map((member, i) => (
             <div key={member.name} ref={(el) => (cardsRef.current[i] = el)}
               className="flex flex-col gap-4 group">

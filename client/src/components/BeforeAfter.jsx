@@ -1,14 +1,14 @@
 ﻿import { useEffect, useRef, useState, useCallback } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import fallbackBefore1 from "../assets/hero/hero1.jpg";
-import fallbackAfter1  from "../assets/hero/hero4.jpg";
-import fallbackBefore2 from "../assets/hero/hero2.jpg";
-import fallbackAfter2  from "../assets/hero/hero5.jpg";
-import fallbackBefore3 from "../assets/hero/hero3.jpg";
-import fallbackAfter3  from "../assets/hero/hero6.jpg";
-import fallbackBefore4 from "../assets/hero/hero5.jpg";
-import fallbackAfter4  from "../assets/hero/hero2.jpg";
+import fallbackBefore1 from "../assets/hero/hero1.avif";
+import fallbackAfter1  from "../assets/hero/hero4.avif";
+import fallbackBefore2 from "../assets/hero/hero2.avif";
+import fallbackAfter2  from "../assets/hero/hero5.avif";
+import fallbackBefore3 from "../assets/hero/hero3.avif";
+import fallbackAfter3  from "../assets/hero/hero6.avif";
+import fallbackBefore4 from "../assets/hero/hero5.avif";
+import fallbackAfter4  from "../assets/hero/hero2.avif";
 
 gsap.registerPlugin(ScrollTrigger);
 
