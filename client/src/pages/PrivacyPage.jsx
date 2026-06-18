@@ -96,9 +96,16 @@ const SECTIONS = [
   },
 ];
 
+import SEO from "../components/SEO";
+
 export default function PrivacyPage() {
   return (
     <main className="bg-[#0F0D0C]">
+      <SEO
+        title="Privacy Policy"
+        description="Read DSquare Designs' privacy policy to understand how we collect, use and protect your personal information."
+        canonical="/privacy"
+      />
       <HeroSection />
       <ContentSection />
     </main>

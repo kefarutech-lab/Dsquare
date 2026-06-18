@@ -100,9 +100,17 @@ const STATS = [
 ];
 
 /* ═══════════════════════════════════════════════════════════════ */
+import SEO from "../components/SEO";
+
 export default function ApproachPage() {
   return (
     <main className="bg-[#0F0D0C]">
+      <SEO
+        title="Our Design Approach & Process"
+        description="Discover how DSquare Designs works — from initial consultation and concept development to detailed planning, execution and final delivery of your dream space."
+        keywords="interior design process Pune, DSquare design approach, interior design consultation Pune, how interior design works"
+        canonical="/approach"
+      />
       <HeroSection />
       <IntroSection />
       <TimelineSection />

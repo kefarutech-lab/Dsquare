@@ -189,6 +189,8 @@ const PROJECTS = [
   },
 ];
 
+import SEO from "../components/SEO";
+
 /* ═══════════════════════════════════════════════════════════════ */
 export default function FeaturedProjectsPage() {
   const { projectId } = useParams();
@@ -215,6 +217,12 @@ export default function FeaturedProjectsPage() {
 
   return (
     <main className="bg-[#0F0D0C]">
+      <SEO
+        title={`${project.name} — ${project.type} Interior Design Project, Pune`}
+        description={`Explore the ${project.name} project by DSquare Designs — a ${project.type.toLowerCase()} interior design project in ${project.location}. ${project.description[0]}`}
+        keywords={`${project.name} interior design, ${project.type.toLowerCase()} interior design Pune, DSquare Designs projects, interior design portfolio Pune`}
+        canonical={`/projects/${project.slug}`}
+      />
       <HeroSection />
       <TabsSection active={active} onSwitch={switchTab} />
       <ProjectContent key={active} project={project} />

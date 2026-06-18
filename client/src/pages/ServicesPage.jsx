@@ -90,9 +90,17 @@ const OBJECTS = [
 ];
 
 /* ═══════════════════════════════════════════════════════════════ */
+import SEO from "../components/SEO";
+
 export default function ServicesPage() {
   return (
     <main className="bg-[#0F0D0C]">
+      <SEO
+        title="Our Services — Residential, Commercial & Hospitality Design"
+        description="Explore DSquare Designs' full range of interior design services in Pune — residential interiors, commercial offices, hospitality spaces and development projects."
+        keywords="interior design services Pune, residential interior design, commercial interior design Pune, hospitality design Pune, office interior design Pune, turnkey interior design Pune"
+        canonical="/services"
+      />
       <HeroSection />
       <EditorialSection />
       <ServicePanelsSection />

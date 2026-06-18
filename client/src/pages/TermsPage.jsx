@@ -114,9 +114,16 @@ const SECTIONS = [
   },
 ];
 
+import SEO from "../components/SEO";
+
 export default function TermsPage() {
   return (
     <main className="bg-[#0F0D0C]">
+      <SEO
+        title="Terms & Conditions"
+        description="Read the terms and conditions for using the DSquare Designs website and engaging our interior design services."
+        canonical="/terms"
+      />
       <HeroSection />
       <ContentSection />
     </main>

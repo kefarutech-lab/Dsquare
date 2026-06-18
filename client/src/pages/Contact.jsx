@@ -11,6 +11,8 @@ const ENQUIRY_TYPES = [
   "Project Management Consultancy",
 ];
 
+import SEO from "../components/SEO";
+
 export default function Contact() {
   const pageRef    = useRef(null);
   const headRef    = useRef(null);
@@ -99,6 +101,12 @@ export default function Contact() {
 
   return (
     <main ref={pageRef} className="bg-[#0F0D0C] min-h-screen">
+      <SEO
+        title="Contact Us — Book a Free Consultation"
+        description="Get in touch with DSquare Designs to discuss your interior design project in Pune. Book a free consultation for residential, commercial or hospitality interiors."
+        keywords="contact interior designer Pune, book interior design consultation Pune, DSquare Designs contact, interior design enquiry Pune"
+        canonical="/contact"
+      />
 
       {/* ── Hero strip ──────────────────────────────────────────── */}
       <div className="max-w-[1400px] mx-auto px-5 lg:px-12 pt-40 pb-20 lg:pt-48 lg:pb-28">

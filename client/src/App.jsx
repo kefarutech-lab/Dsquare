@@ -19,6 +19,8 @@ import NotFoundPage from "./pages/NotFoundPage";
 import { useSmoothScroll } from "./hooks/useSmoothScroll";
 import "./index.css";
 
+const GA_ID = "G-HGLM2475MC"; // ← replace with your Measurement ID
+
 function ScrollToTop() {
   const { pathname } = useLocation();
   useEffect(() => {
@@ -31,11 +33,21 @@ function ScrollToTop() {
   return null;
 }
 
+function Analytics() {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    if (typeof window.gtag !== "function") return;
+    window.gtag("config", GA_ID, { page_path: pathname });
+  }, [pathname]);
+  return null;
+}
+
 function AppContent() {
   useSmoothScroll();
   return (
     <>
       <ScrollToTop />
+      <Analytics />
       <Navbar />
       <SocialSidebar />
       <WhatsAppButton />

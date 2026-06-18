@@ -117,10 +117,18 @@ const TEAM = [
 ];
 
 
+import SEO from "../components/SEO";
+
 /* ═══════════════════════════════════════════════════════════════ */
 export default function AboutPage() {
   return (
     <main className="bg-[#0F0D0C]">
+      <SEO
+        title="About Us — Our Story & Team"
+        description="Meet the passionate team behind DSquare Designs — interior designers, engineers and planners crafting exceptional residential and commercial spaces across Pune."
+        keywords="about DSquare Designs, interior design team Pune, interior designers Pune, DSquare Interiors team"
+        canonical="/about"
+      />
       <HeroSection />
       <OurStorySection />
       <PhilosophySection />
