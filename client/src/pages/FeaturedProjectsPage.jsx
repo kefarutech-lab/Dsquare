@@ -198,14 +198,34 @@ export default function FeaturedProjectsPage() {
 
   const initial = PROJECTS.find((p) => p.slug === projectId) ?? PROJECTS[0];
   const [active, setActive] = useState(initial.slug);
+  const tabsRef    = useRef(null);
+  const contentRef = useRef(null);
+  const isMounted  = useRef(false);
 
   const project = PROJECTS.find((p) => p.slug === active) ?? PROJECTS[0];
+
+  /* Scroll to project content after active changes (skip on first mount) */
+  useEffect(() => {
+    if (!isMounted.current) { isMounted.current = true; return; }
+    requestAnimationFrame(() => {
+      if (!contentRef.current) return;
+      const top = contentRef.current.getBoundingClientRect().top + window.scrollY;
+      // Only scroll if the user is already below the content — if they're
+      // still near the top (hero/tabs visible), let the content swap in place
+      if (window.scrollY < top) return;
+      if (window.__lenis) {
+        window.__lenis.scrollTo(top, { duration: 0.8 });
+      } else {
+        window.scrollTo({ top, behavior: "smooth" });
+      }
+    });
+  }, [active]);
 
   /* Sync URL when tab changes */
   const switchTab = (slug) => {
     if (slug === active) return;
     setActive(slug);
-    navigate(`/projects/${slug}`, { replace: true });
+    navigate(`/projects/${slug}`, { replace: true, preventScrollReset: true });
   };
 
   /* Sync tab if URL changes externally */
@@ -224,8 +244,10 @@ export default function FeaturedProjectsPage() {
         canonical={`/projects/${project.slug}`}
       />
       <HeroSection />
-      <TabsSection active={active} onSwitch={switchTab} />
-      <ProjectContent key={active} project={project} />
+      <TabsSection active={active} onSwitch={switchTab} tabsRef={tabsRef} />
+      <div ref={contentRef}>
+        <ProjectContent key={active} project={project} />
+      </div>
     </main>
   );
 }
@@ -273,8 +295,12 @@ function HeroSection() {
 }
 
 /* ── 2. Tabs ────────────────────────────────────────────────────── */
-function TabsSection({ active, onSwitch }) {
+function TabsSection({ active, onSwitch, tabsRef }) {
   const lineRef = useRef(null);
+  const currentIndex = PROJECTS.findIndex((p) => p.slug === active);
+
+  const goPrev = () => { if (currentIndex > 0) onSwitch(PROJECTS[currentIndex - 1].slug); };
+  const goNext = () => { if (currentIndex < PROJECTS.length - 1) onSwitch(PROJECTS[currentIndex + 1].slug); };
 
   useEffect(() => {
     gsap.from(lineRef.current, {
@@ -284,22 +310,61 @@ function TabsSection({ active, onSwitch }) {
   }, []);
 
   return (
-    <div className="bg-[#0F0D0C] sticky top-0 z-50 border-b border-[#D9D3C3]/8">
+    <div ref={tabsRef} className="bg-[#0F0D0C] sticky top-0 z-50 border-b border-[#D9D3C3]/8">
       <div ref={lineRef} className="h-px w-full bg-[#D9D3C3]/8" style={{ transformOrigin: "left center" }} />
-      <div className="max-w-[1400px] mx-auto px-5 lg:px-12">
+
+      {/* ── Mobile: arrow nav ── */}
+      <div className="lg:hidden flex items-center justify-between px-5 py-4">
+        {currentIndex > 0 ? (
+          <button onClick={goPrev} aria-label="Previous project"
+            className="w-9 h-9 flex items-center justify-center border border-[#D9D3C3]/22
+                       text-[#D9D3C3]/65 hover:border-[#B17457] hover:text-[#B17457] transition-all duration-300">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M13 7H1M6 2L1 7L6 12" stroke="currentColor" strokeWidth="1.3"
+                strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </button>
+        ) : (
+          <span className="w-9 h-9" />
+        )}
+
+        <div className="flex flex-col items-center gap-0.5">
+          <span className="font-sans font-bold text-[10px] tracking-[0.3em] uppercase text-[#EDE9DF]">
+            {PROJECTS[currentIndex].name}
+          </span>
+          <span className="font-sans text-[#D9D3C3]/40 text-[9px] tracking-[0.2em]">
+            {String(currentIndex + 1).padStart(2, "0")} / {String(PROJECTS.length).padStart(2, "0")}
+          </span>
+        </div>
+
+        {currentIndex < PROJECTS.length - 1 ? (
+          <button onClick={goNext} aria-label="Next project"
+            className="w-9 h-9 flex items-center justify-center border border-[#D9D3C3]/22
+                       text-[#D9D3C3]/65 hover:border-[#B17457] hover:text-[#B17457] transition-all duration-300">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M1 7H13M8 2L13 7L8 12" stroke="currentColor" strokeWidth="1.3"
+                strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </button>
+        ) : (
+          <span className="w-9 h-9" />
+        )}
+      </div>
+
+      {/* ── Desktop: scrollable tabs ── */}
+      <div className="hidden lg:block max-w-[1400px] mx-auto px-12">
         <div className="flex items-stretch overflow-x-auto scrollbar-none">
           {PROJECTS.map((p) => (
             <button
               key={p.slug}
               onClick={() => onSwitch(p.slug)}
-              className={`relative flex-shrink-0 px-6 lg:px-10 py-5 font-sans font-bold text-[10px] tracking-[0.3em] uppercase transition-colors duration-300 ${
+              className={`relative flex-shrink-0 px-10 py-5 font-sans font-bold text-[10px] tracking-[0.3em] uppercase transition-colors duration-300 ${
                 active === p.slug
                   ? "text-[#EDE9DF]"
                   : "text-[#D9D3C3]/48 hover:text-[#D9D3C3]/80"
               }`}
             >
               {p.name}
-              {/* Active underline */}
               {active === p.slug && (
                 <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#B17457]" />
               )}
@@ -382,16 +447,6 @@ function OverviewSection({ project }) {
             >
               {project.name}
             </h2>
-          </div>
-
-          {/* Stats grid */}
-          <div className="grid grid-cols-2 gap-4 border border-[#D9D3C3]/8 p-6">
-            {project.stats.map((s) => (
-              <div key={s.label} className="flex flex-col gap-1">
-                <span className="font-sans text-[#B17457] text-[8px] tracking-[0.35em] uppercase">{s.label}</span>
-                <span className="font-sans text-[#EDE9DF] text-sm">{s.value}</span>
-              </div>
-            ))}
           </div>
 
           {/* Divider */}

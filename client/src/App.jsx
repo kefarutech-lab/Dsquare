@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import SplashScreen from "./components/SplashScreen";
 import Navbar from "./components/Navbar";
@@ -23,7 +23,13 @@ const GA_ID = "G-HGLM2475MC"; // ← replace with your Measurement ID
 
 function ScrollToTop() {
   const { pathname } = useLocation();
+  const prevRef = useRef(pathname);
+
   useEffect(() => {
+    const prev = prevRef.current;
+    prevRef.current = pathname;
+    // Don't scroll to top when switching between project tabs
+    if (prev.startsWith("/projects") && pathname.startsWith("/projects")) return;
     if (window.__lenis) {
       window.__lenis.scrollTo(0, { immediate: true });
     } else {

@@ -20,10 +20,10 @@ const hospitalityImg = pickOne(import.meta.glob("../assets/services/hospitality.
 const developmentImg = pickOne(import.meta.glob("../assets/services/development.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}", { eager: true }), hero4);
 
 const SLIDES = [
-  { word: "RESIDENTIAL", image: residentialImg },
-  { word: "COMMERCIAL",  image: commercialImg  },
-  { word: "HOSPITALITY", image: hospitalityImg },
-  { word: "DEVELOPMENT", image: developmentImg },
+  { word: "RESIDENTIAL", image: residentialImg, route: "/services/interior-design" },
+  { word: "COMMERCIAL",  image: commercialImg,  route: "/services/commercial"       },
+  { word: "HOSPITALITY", image: hospitalityImg, route: "/services/hospitality"      },
+  { word: "DEVELOPMENT", image: developmentImg, route: "/services/development"      },
 ];
 
 const X_SCATTER = {
@@ -111,9 +111,10 @@ function MobileCarousel() {
             const chars = slide.word.split("");
             const fSize = `clamp(2.6rem, ${Math.floor(96 / chars.length)}vw, 14rem)`;
             return (
-              <div
+              <Link
                 key={slide.word}
-                className="relative flex-shrink-0 overflow-hidden"
+                to={slide.route}
+                className="relative flex-shrink-0 overflow-hidden block"
                 style={{ width: "100%", height: "58vh" }}
               >
                 {/* Image */}
@@ -125,21 +126,12 @@ function MobileCarousel() {
                 <div className="absolute bottom-0 left-0 right-0 h-2/5 bg-gradient-to-t from-[#0F0D0C]/85 to-transparent" />
 
                 {/* Giant word */}
-                <div className="absolute top-0 left-0 right-0 flex justify-between items-end"
+                <div className="absolute top-0 left-0 right-0 overflow-hidden"
                   style={{ paddingTop: "0.05em", paddingLeft: "1vw", paddingRight: "1vw" }}>
-                  {chars.map((char, ci) => (
-                    <span key={ci}
-                      className="font-display text-[#EDE9DF] select-none"
-                      style={{ fontSize: fSize, lineHeight: 1, display: "block" }}>
-                      {char}
-                    </span>
-                  ))}
-                </div>
-
-                {/* Counter */}
-                <div className="absolute top-4 right-4 z-10">
-                  <span className="font-sans text-[#EDE9DF]/30 text-[9px] tracking-[0.4em]">
-                    {String(i + 1).padStart(2, "0")} / {String(SLIDES.length).padStart(2, "0")}
+                  <span
+                    className="font-display text-[#EDE9DF] select-none block w-full"
+                    style={{ fontSize: fSize, lineHeight: 1, letterSpacing: "0.02em" }}>
+                    {slide.word}
                   </span>
                 </div>
 
@@ -150,8 +142,8 @@ function MobileCarousel() {
                     <span className="font-sans text-[#B17457] text-[9px] tracking-[0.4em] uppercase">
                       {slide.word.charAt(0) + slide.word.slice(1).toLowerCase()}
                     </span>
-                    <Link to="/services"
-                      className="group inline-flex items-center gap-2 font-sans text-[10px] tracking-[0.3em] uppercase text-[#EDE9DF]/55 hover:text-[#B17457] transition-colors duration-300">
+                    <Link to={slide.route}
+                      className="group inline-flex items-center gap-2 font-sans font-bold text-[11px] tracking-[0.3em] uppercase text-[#EDE9DF] hover:text-[#B17457] transition-colors duration-300">
                       <span className="border-b border-current pb-0.5">Explore</span>
                       <svg width="11" height="11" viewBox="0 0 14 14" fill="none"
                         className="group-hover:translate-x-1 transition-transform duration-200">
@@ -161,30 +153,25 @@ function MobileCarousel() {
                     </Link>
                   </div>
                 </div>
-              </div>
+              </Link>
             );
           })}
         </div>
       </div>
 
-      {/* Dots + counter */}
-      <div className="flex items-center justify-between px-5 mt-5">
-        <div className="flex items-center gap-2">
-          {SLIDES.map((_, i) => (
-            <button key={i} onClick={() => goTo(i)}
-              aria-label={`Go to ${SLIDES[i].word}`}
-              className="transition-all duration-300"
-              style={{
-                width:           i === current ? "28px" : "8px",
-                height:          "3px",
-                backgroundColor: i === current ? "#B17457" : "#D9D3C3",
-                opacity:         i === current ? 1 : 0.25,
-              }} />
-          ))}
-        </div>
-        <span className="font-sans text-[#D9D3C3]/40 text-[10px] tracking-[0.2em]">
-          {String(current + 1).padStart(2, "0")} / {String(SLIDES.length).padStart(2, "0")}
-        </span>
+      {/* Dots */}
+      <div className="flex items-center justify-center gap-2 px-5 mt-5">
+        {SLIDES.map((_, i) => (
+          <button key={i} onClick={() => goTo(i)}
+            aria-label={`Go to ${SLIDES[i].word}`}
+            className="transition-all duration-300"
+            style={{
+              width:           i === current ? "28px" : "8px",
+              height:          "3px",
+              backgroundColor: i === current ? "#B17457" : "#D9D3C3",
+              opacity:         i === current ? 1 : 0.25,
+            }} />
+        ))}
       </div>
     </div>
   );
@@ -301,10 +288,12 @@ function DesktopSlides() {
               className="absolute inset-0"
               style={{ zIndex: i + 1 }}>
 
-              <img src={slide.image} alt={slide.word} draggable={false}
-                className="absolute inset-0 w-full h-full object-cover" />
-              <div className="absolute inset-0 bg-[#0F0D0C]/50" />
-              <div className="absolute bottom-0 left-0 right-0 h-2/5 bg-gradient-to-t from-[#0F0D0C]/80 to-transparent" />
+              <Link to={slide.route} className="absolute inset-0">
+                <img src={slide.image} alt={slide.word} draggable={false}
+                  className="absolute inset-0 w-full h-full object-cover" />
+              </Link>
+              <div className="absolute inset-0 bg-[#0F0D0C]/50 pointer-events-none" />
+              <div className="absolute bottom-0 left-0 right-0 h-2/5 bg-gradient-to-t from-[#0F0D0C]/80 to-transparent pointer-events-none" />
 
               <div className="absolute top-0 left-0 right-0 flex justify-between items-end"
                 style={{ paddingTop: "0.05em", paddingLeft: "1vw", paddingRight: "1vw" }}>
@@ -318,33 +307,24 @@ function DesktopSlides() {
                 ))}
               </div>
 
-              <div className="absolute top-12 right-16 z-10">
-                <span className="font-sans text-[#EDE9DF]/25 text-[9px] tracking-[0.4em] uppercase">
-                  {String(i + 1).padStart(2, "0")} / {String(SLIDES.length).padStart(2, "0")}
-                </span>
-              </div>
 
               <div className="absolute bottom-0 left-0 right-0 px-12 pb-14">
                 <div ref={(el) => (lineRefs.current[i] = el)}
                   className="w-full h-px bg-white/15 mb-7" />
                 <div ref={(el) => (infoRefs.current[i] = el)}
-                  className="flex items-end justify-between gap-6">
-                  <div className="flex flex-col gap-2">
-                    <span className="font-sans text-[#B17457] text-[9px] tracking-[0.4em] uppercase">
-                      {slide.word.charAt(0) + slide.word.slice(1).toLowerCase()}
-                    </span>
-                  </div>
-                  <div className="flex flex-col items-end gap-3">
-                    <Link to="/work"
-                      className="group inline-flex items-center gap-2 font-sans text-[10px] tracking-[0.3em] uppercase text-[#EDE9DF]/45 hover:text-[#B17457] transition-colors duration-300 mt-1">
-                      <span className="border-b border-current pb-0.5">View Work</span>
-                      <svg width="11" height="11" viewBox="0 0 14 14" fill="none"
-                        className="group-hover:translate-x-1 transition-transform duration-200">
-                        <path d="M1 7H13M8 2L13 7L8 12" stroke="currentColor"
-                          strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-                    </Link>
-                  </div>
+                  className="flex flex-col items-center gap-4">
+                  <span className="font-sans text-[#B17457] text-[9px] tracking-[0.4em] uppercase">
+                    {slide.word.charAt(0) + slide.word.slice(1).toLowerCase()}
+                  </span>
+                  <Link to={slide.route}
+                    className="group inline-flex items-center gap-2 font-sans font-bold text-[11px] tracking-[0.3em] uppercase text-[#EDE9DF] hover:text-[#B17457] transition-colors duration-300">
+                    <span className="border-b border-current pb-0.5">View Work</span>
+                    <svg width="11" height="11" viewBox="0 0 14 14" fill="none"
+                      className="group-hover:translate-x-1 transition-transform duration-200">
+                      <path d="M1 7H13M8 2L13 7L8 12" stroke="currentColor"
+                        strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </Link>
                 </div>
               </div>
             </div>

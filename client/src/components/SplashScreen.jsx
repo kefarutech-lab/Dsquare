@@ -101,7 +101,7 @@ export default function SplashScreen({ onComplete }) {
         <div className="flex justify-center mb-4">
           <p
             ref={labelRef}
-            className="text-[#D9D3C3] font-sans font-light text-[10px] tracking-[0.45em] uppercase opacity-80"
+            className="text-[#D9D3C3] font-sans font-bold text-[11px] tracking-[0.45em] uppercase"
           >
             Experience Loading
           </p>

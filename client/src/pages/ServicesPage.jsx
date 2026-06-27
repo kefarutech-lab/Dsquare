@@ -24,57 +24,72 @@ const acaiHero    = toHero(import.meta.glob("../assets/projects/acai-hotel/hero.
 const finupHero   = toHero(import.meta.glob("../assets/projects/finup-consultancy/hero.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}",   { eager: true }), hero4);
 const pcPatilHero = toHero(import.meta.glob("../assets/projects/ca-official/hero.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}",         { eager: true }), hero6);
 
+/* ── Service panel background images ───────────────────────────── */
+const panelInterior    = toHero(import.meta.glob("../assets/services/panels/interior-design/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}", { eager: true }), hero1);
+const panelCommercial  = toHero(import.meta.glob("../assets/services/panels/commercial/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}",      { eager: true }), hero2);
+const panelHospitality = toHero(import.meta.glob("../assets/services/panels/hospitality/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}",    { eager: true }), hero6);
+const panelDevelopment = toHero(import.meta.glob("../assets/services/panels/development/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}",    { eager: true }), hero4);
+
 /* ── Data ──────────────────────────────────────────────────────── */
 const SERVICE_PANELS = [
   {
-    name: "Interior Design",
+    name: "Residential Design",
     slug: "interior-design",
-    image: hero1,
+    image: panelInterior,
     thumb: hero3,
     desc: "We design interiors that tell the story of each client, shaping residences, commercial spaces and developments through thoughtful detailing, curated materials and considered layouts to create environments that are beautiful, functional and deeply personal.",
   },
   {
     name: "Commercial Spaces",
     slug: "commercial",
-    image: hero2,
+    image: panelCommercial,
     thumb: hero4,
     desc: "We shape environments where people perform at their best — lobbies, offices, retail and hospitality spaces crafted with the same precision and intention we bring to every residential project.",
   },
   {
     name: "Café & Hospitality",
     slug: "hospitality",
-    image: hero6,
+    image: panelHospitality,
     thumb: hero5,
     desc: "We create branded hospitality environments that leave lasting impressions — from intimate cafés to landmark venues — where every material choice, every detail, contributes to the story of the place.",
   },
   {
     name: "Project Development",
     slug: "development",
-    image: hero4,
+    image: panelDevelopment,
     thumb: hero1,
     desc: "With in-house expertise across interior design and project management, we offer a fully integrated service — from initial concept and spatial planning through to architectural detailing, installation and handover.",
   },
 ];
 
+const discoveryImg   = toHero(import.meta.glob("../assets/process/discovery/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}",   { eager: true }), null);
+const developmentImg = toHero(import.meta.glob("../assets/process/development/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}", { eager: true }), null);
+const detailingImg   = toHero(import.meta.glob("../assets/process/detailing/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}",   { eager: true }), null);
+const deliveryImg    = toHero(import.meta.glob("../assets/process/delivery/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}",    { eager: true }), null);
+
 const PROCESS_STEPS = [
   {
     step: "01",
     name: "DISCOVERY",
+    image: discoveryImg,
     desc: "Every project begins with understanding — not only what you envision, but how you will live, work, and thrive within the space. We listen deeply, uncovering aspirations, lifestyle requirements, and the true character of the environment, to build a foundation of purpose.",
   },
   {
     step: "02",
     name: "DEVELOPMENT",
+    image: developmentImg,
     desc: "Through design meetings led by senior members of our team, we translate ideas into atmosphere and narrative. This stage is about storytelling, layering concept, mood, and materiality to shape a vision that is both unique and timeless.",
   },
   {
     step: "03",
     name: "DETAILING",
+    image: detailingImg,
     desc: "The vision becomes tangible. We refine every element — from architectural detailing and bespoke joinery to finishes and furnishings — ensuring coherence, precision, and artistry across every scale.",
   },
   {
     step: "04",
     name: "DELIVERY",
+    image: deliveryImg,
     desc: "We seamlessly orchestrate the installation and handover, managing every discipline and detail with care. Our experienced project management team ensures deadlines are met and that the result is a space ready to be lived in, admired, and enjoyed from the very first moment.",
   },
 ];
@@ -298,13 +313,6 @@ function ServicePanel({ svc, index }) {
             ))}
           </h2>
 
-          {/* Thumbnail */}
-          <div className="relative overflow-hidden border border-[#B17457]/25"
-            style={{ width: "260px", height: "170px" }}>
-            <img src={svc.thumb} alt="" draggable={false}
-              className="w-full h-full object-cover transition-transform duration-700 hover:scale-105" />
-          </div>
-
           {/* Description */}
           <p className="font-sans text-[#D9D3C3]/72 text-sm font-light leading-loose">
             {svc.desc}
@@ -374,7 +382,11 @@ function ProcessSection() {
             <div
               key={step.name}
               ref={(el) => (rowRefs.current[i] = el)}
-              className="grid grid-cols-1 lg:grid-cols-[280px_1fr_1fr] gap-6 lg:gap-16 py-10 border-t border-[#D9D3C3]/10 items-start"
+              className={`grid grid-cols-1 gap-6 py-10 border-t border-[#D9D3C3]/10 items-center ${
+                step.image
+                  ? "lg:grid-cols-[280px_1fr_1fr]"
+                  : "lg:grid-cols-[280px_1fr_1fr]"
+              }`}
             >
               {/* Step name */}
               <div className="flex items-baseline gap-4">
@@ -385,10 +397,23 @@ function ProcessSection() {
                 </h3>
               </div>
 
-              {/* Description — spans 2 cols */}
-              <p className="font-sans text-[#D9D3C3]/72 text-sm font-light leading-loose lg:col-span-2 max-w-2xl">
+              {/* Description */}
+              <p className={`font-sans text-[#D9D3C3]/72 text-sm font-light leading-loose max-w-2xl ${!step.image ? "lg:col-span-2" : ""}`}>
                 {step.desc}
               </p>
+
+              {/* Image (only if provided) */}
+              {step.image && (
+                <div className="relative overflow-hidden" style={{ aspectRatio: "4/3" }}>
+                  <img
+                    src={step.image}
+                    alt={step.name}
+                    draggable={false}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-[#0F0D0C]/15" />
+                </div>
+              )}
             </div>
           ))}
           {/* Final border */}

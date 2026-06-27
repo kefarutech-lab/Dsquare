@@ -63,7 +63,9 @@ function CompareSlider({ beforeImg, afterImg }) {
       ref={containerRef}
       className="relative w-full h-[380px] lg:h-[500px] overflow-hidden select-none cursor-col-resize"
       onMouseMove={(e) => { if (isDragging.current) calcPos(e.clientX); }}
-      onTouchMove={(e) => calcPos(e.touches[0].clientX)}
+      onTouchStart={(e) => e.stopPropagation()}
+      onTouchEnd={(e) => e.stopPropagation()}
+      onTouchMove={(e) => { e.stopPropagation(); calcPos(e.touches[0].clientX); }}
     >
       {/* After (base) */}
       <img src={afterImg} alt="After" draggable={false}
@@ -220,8 +222,8 @@ export default function BeforeAfter() {
         {/* ── Carousel ───────────────────────────────────────────── */}
         <div className="relative">
 
-          {/* Prev arrow */}
-          {totalPages > 1 && (
+          {/* Prev arrow (hidden on first page) */}
+          {totalPages > 1 && page > 0 && (
             <button
               onClick={prev}
               aria-label="Previous"
@@ -238,8 +240,8 @@ export default function BeforeAfter() {
             </button>
           )}
 
-          {/* Next arrow */}
-          {totalPages > 1 && (
+          {/* Next arrow (hidden on last page) */}
+          {totalPages > 1 && page < totalPages - 1 && (
             <button
               onClick={next}
               aria-label="Next"

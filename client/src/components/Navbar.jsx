@@ -225,8 +225,13 @@ export default function Navbar() {
 
     const onScroll = () => {
       const y = window.scrollY;
-      const past = y > 60;
       const scrollingDown = y > lastY;
+
+      // Background: transparent at top, dark+blur when scrolled
+      const bg = y > 60 ? "rgba(15, 13, 12, 0.92)" : "rgba(15, 13, 12, 0)";
+      gsap.to(header, { backgroundColor: bg, duration: 0.35, overwrite: "auto" });
+      header.style.backdropFilter       = y > 60 ? "blur(12px)" : "none";
+      header.style.webkitBackdropFilter = y > 60 ? "blur(12px)" : "none";
 
       // Hide / show
       if (scrollingDown && y > 120 && !hidden) {
@@ -236,8 +241,6 @@ export default function Navbar() {
         gsap.to(header, { yPercent: 0, duration: 0.45, ease: "power3.out", overwrite: "auto" });
         hidden = false;
       }
-
-      header.classList.remove("backdrop-blur-md");
 
       lastY = y;
     };
@@ -304,5 +307,3 @@ export default function Navbar() {
     </>
   );
 }
-
-

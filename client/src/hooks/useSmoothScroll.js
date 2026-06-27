@@ -33,9 +33,24 @@ export function useSmoothScroll() {
     // Expose lenis globally so ScrollToTop can reset it
     window.__lenis = lenis;
 
+    // Images finishing their network fetch after mount shift page height,
+    // which leaves already-calculated ScrollTrigger positions (e.g. footer
+    // animations near the bottom) stale. Refresh whenever any resource
+    // loads, debounced, using capture so non-bubbling `load` events on
+    // <img> are still caught via delegation.
+    let refreshTimer;
+    const onResourceLoad = (e) => {
+      if (e.target === window || e.target === document) return;
+      clearTimeout(refreshTimer);
+      refreshTimer = setTimeout(() => ScrollTrigger.refresh(), 150);
+    };
+    document.addEventListener("load", onResourceLoad, true);
+
     return () => {
       gsap.ticker.remove(lenis.raf);
       lenis.destroy();
+      document.removeEventListener("load", onResourceLoad, true);
+      clearTimeout(refreshTimer);
     };
   }, []);
 

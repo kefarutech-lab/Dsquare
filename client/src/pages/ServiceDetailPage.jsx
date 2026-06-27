@@ -16,6 +16,14 @@ gsap.registerPlugin(ScrollTrigger);
 function toPhotos(glob) {
   return Object.values(glob).map((m) => ({ src: m.default }));
 }
+function toHero(glob, fallback) {
+  return Object.values(glob)[0]?.default ?? fallback;
+}
+
+const interiorHero    = toHero(import.meta.glob("../assets/services/interior-design/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}", { eager: true }), hero1);
+const commercialHero  = toHero(import.meta.glob("../assets/services/commercial/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}",      { eager: true }), hero4);
+const hospitalityHero = toHero(import.meta.glob("../assets/services/hospitality/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}",    { eager: true }), hero5);
+const developmentHero = toHero(import.meta.glob("../assets/services/development/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}",    { eager: true }), hero6);
 
 const INTERIOR_PHOTO_SETS = {
   "Living Room": toPhotos(import.meta.glob("../assets/interior/Livingroom/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}", { eager: true })),
@@ -42,9 +50,9 @@ const DEVELOPMENT_PHOTO_SETS = {
 
 const SERVICES = {
   "interior-design": {
-    title: "Interior Design",
+    title: "Residential Design",
     tagline: "Luxury Interior Design Solutions",
-    heroImage: hero1,
+    heroImage: interiorHero,
     about:
       "From elegant residences to beautifully detailed bedrooms and kitchens, we craft interiors that reflect your personality and elevate everyday living. Each project is a unique story told through light, material and space.",
     stats: [
@@ -59,7 +67,7 @@ const SERVICES = {
   "commercial": {
     title: "Commercial Spaces",
     tagline: "Modern Commercial & Office Spaces",
-    heroImage: hero4,
+    heroImage: commercialHero,
     about:
       "We design workplaces, showrooms and service environments that inspire performance, reflect brand identity and leave a lasting impression on every visitor and client who walks through the door.",
     stats: [
@@ -74,7 +82,7 @@ const SERVICES = {
   "hospitality": {
     title: "Café & Hospitality",
     tagline: "Hospitality Design That Captivates",
-    heroImage: hero5,
+    heroImage: hospitalityHero,
     about:
       "We create hospitality environments that captivate from the moment guests arrive — from intimate cafés to landmark hotels, every material choice and spatial decision contributes to an unforgettable experience.",
     stats: [
@@ -89,7 +97,7 @@ const SERVICES = {
   "development": {
     title: "Project Development",
     tagline: "End-to-End Project Development",
-    heroImage: hero6,
+    heroImage: developmentHero,
     about:
       "From concept through construction to final handover, we manage every stage of project development with precision and care — delivering spaces that are built as beautifully as they are designed.",
     stats: [
@@ -149,11 +157,11 @@ function HeroSection({ service }) {
       <div className="absolute bottom-12 lg:bottom-16 left-0 px-8 lg:px-20 xl:px-32">
         <h1
           ref={headRef}
-          className="font-display text-[#EDE9DF] whitespace-nowrap leading-none"
-          style={{ fontSize: "clamp(3rem, 7vw, 7rem)", letterSpacing: "-0.02em" }}
+          className="font-display text-[#EDE9DF] leading-none lg:whitespace-nowrap"
+          style={{ fontSize: "clamp(2.5rem, 7vw, 7rem)", letterSpacing: "-0.02em" }}
         >
-          {service.title.split(" ")[0]}&nbsp;
-          <em className="not-italic text-[#B17457]">
+          <span className="block lg:inline">{service.title.split(" ")[0]}</span>
+          <em className="not-italic text-[#B17457] block lg:inline lg:ml-4">
             {service.title.split(" ").slice(1).join(" ")}
           </em>
         </h1>
@@ -165,10 +173,9 @@ function HeroSection({ service }) {
 
 /* ── 2. Intro + Stats ───────────────────────────────────────────── */
 function IntroSection({ service }) {
-  const secRef    = useRef(null);
-  const textRef   = useRef(null);
-  const statsRef  = useRef([]);
-  const lineRef   = useRef(null);
+  const secRef   = useRef(null);
+  const textRef  = useRef(null);
+  const lineRef  = useRef(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -180,13 +187,6 @@ function IntroSection({ service }) {
         scaleX: 0, duration: 1.1, ease: "power2.out", transformOrigin: "left center",
         scrollTrigger: { trigger: lineRef.current, start: "top 85%", toggleActions: "play none none none" },
       });
-      statsRef.current.forEach((el, i) => {
-        if (!el) return;
-        gsap.from(el, {
-          opacity: 0, y: 24, duration: 0.8, delay: i * 0.12, ease: "power3.out",
-          scrollTrigger: { trigger: el, start: "top 85%", toggleActions: "play none none none" },
-        });
-      });
     }, secRef);
     return () => ctx.revert();
   }, []);
@@ -194,26 +194,11 @@ function IntroSection({ service }) {
   return (
     <section ref={secRef} className="bg-[#0F0D0C] py-20 lg:py-28 px-5 lg:px-12">
       <div className="max-w-[1400px] mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-12 lg:gap-24 items-start">
-
-          {/* About text */}
-          <div ref={textRef}>
-            <p className="font-display text-[#EDE9DF]/90 leading-relaxed"
-              style={{ fontSize: "clamp(1.1rem, 1.8vw, 1.5rem)", maxWidth: "680px" }}>
-              {service.about}
-            </p>
-          </div>
-
-          {/* Stats */}
-          <div className="flex flex-row lg:flex-col gap-10 lg:gap-8 lg:min-w-[200px]">
-            {service.stats.map((s, i) => (
-              <div key={s.label} ref={(el) => (statsRef.current[i] = el)} className="flex flex-col gap-1">
-                <span className="font-display text-[#B17457] leading-none"
-                  style={{ fontSize: "clamp(2rem, 3.5vw, 3rem)" }}>{s.value}</span>
-                <span className="font-sans text-[#D9D3C3]/65 text-[9px] tracking-[0.3em] uppercase">{s.label}</span>
-              </div>
-            ))}
-          </div>
+        <div ref={textRef}>
+          <p className="font-display text-[#EDE9DF]/90 leading-relaxed"
+            style={{ fontSize: "clamp(1.1rem, 1.8vw, 1.5rem)", maxWidth: "680px" }}>
+            {service.about}
+          </p>
         </div>
 
         <div ref={lineRef} className="w-full h-px bg-[#D9D3C3]/10 mt-16"
@@ -274,7 +259,7 @@ function ProjectsSection({ service }) {
               <button
                 key={cat}
                 onClick={() => setActive(cat)}
-                className={`font-sans text-[9px] tracking-[0.3em] uppercase px-5 py-2.5 border transition-all duration-300 ${
+                className={`font-sans font-bold text-[11px] tracking-[0.3em] uppercase px-5 py-2.5 border transition-all duration-300 ${
                   active === cat
                     ? "border-[#B17457] bg-[#B17457] text-[#EDE9DF]"
                     : "border-[#D9D3C3]/20 text-[#D9D3C3]/65 hover:border-[#B17457]/50 hover:text-[#D9D3C3]/85"

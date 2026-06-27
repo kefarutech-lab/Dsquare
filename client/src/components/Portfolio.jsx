@@ -178,37 +178,41 @@ export default function Portfolio() {
         {/* ── Carousel wrapper with side arrows ────────────────── */}
         <div className="relative">
 
-          {/* ── LEFT arrow ── */}
-          <button
-            onClick={prev}
-            aria-label="Previous project"
-            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1 lg:-translate-x-6 z-10
-                       w-12 h-12 border border-[#D9D3C3]/22 bg-[#0F0D0C]/70 backdrop-blur-sm
-                       flex items-center justify-center
-                       text-[#D9D3C3]/65 hover:border-[#B17457] hover:text-[#B17457]
-                       transition-all duration-300"
-          >
-            <svg width="16" height="16" viewBox="0 0 14 14" fill="none">
-              <path d="M13 7H1M6 2L1 7L6 12" stroke="currentColor" strokeWidth="1.3"
-                strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </button>
+          {/* ── LEFT arrow (hidden on first slide) ── */}
+          {current > 0 && (
+            <button
+              onClick={prev}
+              aria-label="Previous project"
+              className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1 lg:-translate-x-6 z-10
+                         w-12 h-12 border border-[#D9D3C3]/22 bg-[#0F0D0C]/70 backdrop-blur-sm
+                         flex items-center justify-center
+                         text-[#D9D3C3]/65 hover:border-[#B17457] hover:text-[#B17457]
+                         transition-all duration-300"
+            >
+              <svg width="16" height="16" viewBox="0 0 14 14" fill="none">
+                <path d="M13 7H1M6 2L1 7L6 12" stroke="currentColor" strokeWidth="1.3"
+                  strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </button>
+          )}
 
-          {/* ── RIGHT arrow ── */}
-          <button
-            onClick={next}
-            aria-label="Next project"
-            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1 lg:translate-x-6 z-10
-                       w-12 h-12 border border-[#D9D3C3]/22 bg-[#0F0D0C]/70 backdrop-blur-sm
-                       flex items-center justify-center
-                       text-[#D9D3C3]/65 hover:border-[#B17457] hover:text-[#B17457]
-                       transition-all duration-300"
-          >
-            <svg width="16" height="16" viewBox="0 0 14 14" fill="none">
-              <path d="M1 7H13M8 2L13 7L8 12" stroke="currentColor" strokeWidth="1.3"
-                strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </button>
+          {/* ── RIGHT arrow (hidden on last slide) ── */}
+          {current < FEATURED.length - 1 && (
+            <button
+              onClick={next}
+              aria-label="Next project"
+              className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1 lg:translate-x-6 z-10
+                         w-12 h-12 border border-[#D9D3C3]/22 bg-[#0F0D0C]/70 backdrop-blur-sm
+                         flex items-center justify-center
+                         text-[#D9D3C3]/65 hover:border-[#B17457] hover:text-[#B17457]
+                         transition-all duration-300"
+            >
+              <svg width="16" height="16" viewBox="0 0 14 14" fill="none">
+                <path d="M1 7H13M8 2L13 7L8 12" stroke="currentColor" strokeWidth="1.3"
+                  strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </button>
+          )}
 
           {/* ── Overflow viewport ── */}
           <div
