@@ -35,13 +35,16 @@ const PAIRS = beforeSrcs.length > 0
   ? beforeSrcs.map((b, i) => ({ before: b, after: afterSrcs[i] ?? b }))
   : FALLBACK_PAIRS;
 
+/* Label shown centered at the top of each before/after pair, in order */
+const PAIR_LABELS = ["Restaurant", "Restaurant", "Residential", "Commercial Office"];
+
 /* Group pairs into pages of 2 */
 function chunkPairs(arr) {
   const pages = [];
   for (let i = 0; i < arr.length; i += 2) pages.push(arr.slice(i, i + 2));
   return pages;
 }
-function CompareSlider({ beforeImg, afterImg }) {
+function CompareSlider({ beforeImg, afterImg, label }) {
   const [pos, setPos]   = useState(50);
   const isDragging      = useRef(false);
   const containerRef    = useRef(null);
@@ -70,9 +73,15 @@ function CompareSlider({ beforeImg, afterImg }) {
       {/* After (base) */}
       <img src={afterImg} alt="After" draggable={false}
         className="absolute inset-0 w-full h-full object-cover" />
-      <div className="absolute top-5 right-5 z-10 bg-[#0F0D0C]/70 backdrop-blur-sm px-3 py-1.5">
-        <span className="font-sans text-[#D9D3C3] text-[9px] tracking-[0.35em] uppercase">After</span>
-      </div>
+
+      {/* Label — centered top, always above both image layers */}
+      {label && (
+        <div className="absolute top-5 left-1/2 -translate-x-1/2 z-30 pointer-events-none">
+          <span className="font-sans font-bold text-[#EDE9DF] text-[11px] lg:text-xs tracking-[0.3em] uppercase bg-[#0F0D0C]/75 backdrop-blur-sm px-5 py-2 border border-[#D9D3C3]/15 whitespace-nowrap">
+            {label}
+          </span>
+        </div>
+      )}
 
       {/* Before (clipped) */}
       <div className="absolute inset-0 overflow-hidden" style={{ width: `${pos}%` }}>
@@ -80,9 +89,6 @@ function CompareSlider({ beforeImg, afterImg }) {
           className="absolute inset-0 h-full object-cover"
           style={{ width: `${10000 / pos}%`, maxWidth: "none" }} />
         <div className="absolute inset-0 bg-[#1C1714]/15" />
-      </div>
-      <div className="absolute top-5 left-5 z-10 bg-[#0F0D0C]/70 backdrop-blur-sm px-3 py-1.5">
-        <span className="font-sans text-[#D9D3C3] text-[9px] tracking-[0.35em] uppercase">Before</span>
       </div>
 
       {/* Divider */}
@@ -118,7 +124,8 @@ export default function BeforeAfter() {
   const trackRef            = useRef(null);
 
   // 1 pair per page on mobile, 2 pairs per page on desktop
-  const pages = isMobile ? PAIRS.map((p) => [p]) : chunkPairs(PAIRS);
+  const indexedPairs = PAIRS.map((p, i) => ({ ...p, idx: i }));
+  const pages = isMobile ? indexedPairs.map((p) => [p]) : chunkPairs(indexedPairs);
   const totalPages = pages.length;
 
   // Detect breakpoint changes and reset carousel position
@@ -203,15 +210,15 @@ export default function BeforeAfter() {
           </div>
 
           <h2
-            className="font-display text-[#EDE9DF]"
+            className="font-display text-[#EDE9DF] whitespace-nowrap"
             style={{ fontSize: "clamp(2rem, 4vw, 3rem)", letterSpacing: "-0.01em" }}
           >
-            <div className="overflow-hidden pb-1">
-              <span ref={line1Ref} className="block">Before &amp;</span>
-            </div>
-            <div className="overflow-hidden">
-              <em ref={line2Ref} className="block not-italic text-[#B17457]">After</em>
-            </div>
+            <span className="overflow-hidden inline-block pb-1 align-bottom">
+              <span ref={line1Ref} className="inline-block">Before &amp;&nbsp;</span>
+            </span>
+            <span className="overflow-hidden inline-block pb-1 align-bottom">
+              <em ref={line2Ref} className="inline-block not-italic text-[#B17457]">After</em>
+            </span>
           </h2>
 
           <p ref={subRef} className="font-sans text-[#D9D3C3]/72 font-light text-sm max-w-md leading-relaxed">
@@ -273,7 +280,8 @@ export default function BeforeAfter() {
                   className="flex-shrink-0 w-full grid grid-cols-1 lg:grid-cols-2 gap-6"
                 >
                   {pagePairs.map((pair, si) => (
-                    <CompareSlider key={si} beforeImg={pair.before} afterImg={pair.after} />
+                    <CompareSlider key={si} beforeImg={pair.before} afterImg={pair.after}
+                      label={PAIR_LABELS[pair.idx]} />
                   ))}
                 </div>
               ))}

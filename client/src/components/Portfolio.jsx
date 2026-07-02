@@ -27,7 +27,7 @@ const pcPatilImages  = toImages(import.meta.glob("../assets/projects/ca-official
 const FEATURED = [
   {
     number: "01",
-    name: "Jagtap",
+    name: "Jagtap Residency",
     type: "Residential",
     location: "Pune",
     desc: "Modern living spaces designed around natural light and spatial flow — a harmonious blend of contemporary luxury and timeless comfort.",
@@ -36,7 +36,7 @@ const FEATURED = [
   },
   {
     number: "02",
-    name: "Butte Patil",
+    name: "Butte Patil Residency",
     type: "Residential",
     location: "Pune",
     desc: "A refined family home balancing elegant aesthetics with functional living. Clean lines, curated materials and bespoke detailing bring warmth to every room.",
@@ -45,11 +45,10 @@ const FEATURED = [
   },
   {
     number: "03",
-    name: "TTura",
+    name: "TTura Restaurant ",
     type: "Residential",
     location: "Pune",
-    desc: "A residential interior designed to bring together contemporary elegance and the warmth of considered living — crafted with precision at every scale.",
-    images: [turaImages[0], turaImages[1] ?? turaImages[0]],
+    desc: "A thoughtfully designed restaurant interior that balances contemporary aesthetics with a welcoming atmosphere, creating an immersive dining experience through refined materials, lighting, and spatial detailing.",    images: [turaImages[0], turaImages[1] ?? turaImages[0]],
     slug: "tura",
   },
   {
@@ -63,16 +62,16 @@ const FEATURED = [
   },
   {
     number: "05",
-    name: "Acai",
+    name: "Acai Restaurant",
     type: "Café & Hospitality",
     location: "Pune",
-    desc: "A vibrant boutique hotel experience where bold design meets warm hospitality. Every space is crafted to leave a lasting impression — from the lobby to the last detail.",
+    desc: "A vibrant restaurant experience where contemporary design meets warm hospitality. Every space is crafted to leave a lasting impression — from the entrance to every dining detail.",  
     images: [acaiImages[0], acaiImages[1] ?? acaiImages[0]],
     slug: "acai",
   },
   {
     number: "06",
-    name: "Finup Consultancy Office",
+    name: "Finup Corporate Office",
     type: "Commercial",
     location: "Pune",
     desc: "A professional workspace designed to reflect credibility and precision — clean lines, considered lighting and a material palette that inspires confidence.",
@@ -81,7 +80,7 @@ const FEATURED = [
   },
   {
     number: "07",
-    name: "PC Patil",
+    name: "PC Patil Corporate office",
     type: "Commercial",
     location: "Pune",
     desc: "A chartered accountancy office interior crafted to communicate trust and structure — disciplined layout, premium materials and a palette that balances warmth with professionalism.",
@@ -170,7 +169,7 @@ export default function Portfolio() {
               className="font-display text-[#EDE9DF] whitespace-nowrap"
               style={{ fontSize: "clamp(2.2rem, 5vw, 4.5rem)", letterSpacing: "-0.02em" }}
             >
-              Selected&nbsp;<em ref={line2Ref} className="not-italic text-[#B17457]">Projects</em>
+              Featured&nbsp;<em ref={line2Ref} className="not-italic text-[#B17457]">Projects</em>
             </h2>
           </div>
         </div>
@@ -263,7 +262,7 @@ export default function Portfolio() {
                       to={`/projects/${project.slug}`}
                       className="group self-start inline-flex items-center gap-3 bg-[#B17457] text-[#EDE9DF] font-sans text-[10px] tracking-[0.3em] uppercase px-7 py-3.5 hover:bg-[#9a6245] transition-colors duration-300 mt-1"
                     >
-                      View Project
+                      A Quick Glance
                       <svg width="13" height="13" viewBox="0 0 14 14" fill="none"
                         className="group-hover:translate-x-1 transition-transform duration-200">
                         <path d="M1 7H13M8 2L13 7L8 12" stroke="currentColor" strokeWidth="1.3"

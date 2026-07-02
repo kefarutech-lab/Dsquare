@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import SplashScreen from "./components/SplashScreen";
 import Navbar from "./components/Navbar";
@@ -79,11 +79,10 @@ function AppContent() {
 
 export default function App() {
   const [showSplash, setShowSplash] = useState(true);
+  const handleSplashComplete = useCallback(() => setShowSplash(false), []);
 
-  // Hero only mounts AFTER splash is fully gone
-  // Sequence: Splash runs → fades out → onComplete fires → Hero mounts → Hero animates
   return showSplash ? (
-    <SplashScreen onComplete={() => setShowSplash(false)} />
+    <SplashScreen onComplete={handleSplashComplete} />
   ) : (
     <BrowserRouter>
       <AppContent />

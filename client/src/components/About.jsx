@@ -2,11 +2,9 @@
 import { Link } from "react-router-dom";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import _fallbackAbout from "../assets/hero/hero3.avif";
-
-/* Drop your image into: client/src/assets/about/  (any filename) */
-const _aboutGlob = import.meta.glob("../assets/about/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}", { eager: true });
-const aboutImg = Object.values(_aboutGlob)[0]?.default ?? _fallbackAbout;
+import _aboutFallback from "../assets/about/HNB04297.jpg";
+const _aboutGlob = import.meta.glob("../assets/about/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP,avif,AVIF}", { eager: true });
+const aboutImg = Object.values(_aboutGlob)[0]?.default ?? _aboutFallback;
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -182,12 +180,6 @@ export default function About() {
 
           {/* ── Right: Content ──────────────────────────────────── */}
           <div className="flex flex-col gap-7">
-
-            {/* Tag */}
-            <div ref={tagRef} className="flex items-center gap-3">
-              <span className="w-8 h-px bg-[#B17457]" />
-              <span className="font-sans text-[#B17457] text-[10px] tracking-[0.4em] uppercase">About Us</span>
-            </div>
 
             {/* Heading — mask clip reveal */}
             <h2

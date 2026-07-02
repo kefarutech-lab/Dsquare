@@ -48,6 +48,14 @@ const DEVELOPMENT_PHOTO_SETS = {
   Development: toPhotos(import.meta.glob("../assets/development/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}", { eager: true })),
 };
 
+/* Renamed display labels for tabs — underlying category keys (tied to
+   photoSets/folder names) stay the same, only the visible text changes */
+const CATEGORY_LABELS = {
+  Office:           "Commercial Offices",
+  Showroom:         "Showrooms",
+  "Service Center": "Automobile Service Centres",
+};
+
 const SERVICES = {
   "interior-design": {
     title: "Residential Design",
@@ -60,7 +68,10 @@ const SERVICES = {
       { value: "100%", label: "Client Satisfaction" },
       { value: "8+",  label: "Years Residential" },
     ],
-    categories: ["Living Room", "Bedrooms", "Kitchen", "Lobby's", "Bungalow"],
+    groups: [
+      { name: "Apartment", categories: ["All", "Living Room", "Bedrooms", "Kitchen", "Lobby's"] },
+      { name: "Bungalow",  categories: null },
+    ],
     photoSets: INTERIOR_PHOTO_SETS,
   },
 
@@ -210,16 +221,36 @@ function IntroSection({ service }) {
 
 /* ── 3. Projects / Gallery Section ─────────────────────────────── */
 function ProjectsSection({ service }) {
-  const [active,  setActive]  = useState(() => service.categories[0]);
+  const hasGroups = !!service.groups;
+
+  const [groupIdx, setGroupIdx] = useState(0);
+  const [active,  setActive]  = useState(() => {
+    if (hasGroups) {
+      const g = service.groups[0];
+      return g.categories ? g.categories[0] : g.name;
+    }
+    return service.categories[0];
+  });
   const [lightbox, setLightbox] = useState(null); // { photos, index }
   const secRef  = useRef(null);
   const gridRef = useRef(null);
+
+  const activeGroup = hasGroups ? service.groups[groupIdx] : null;
+
+  const selectGroup = (idx) => {
+    if (idx === groupIdx) return;
+    setGroupIdx(idx);
+    const g = service.groups[idx];
+    setActive(g.categories ? g.categories[0] : g.name);
+  };
 
   const isMasonry = !!service.photoSets;
 
   const photos = isMasonry
     ? (active === "All"
-        ? Object.values(service.photoSets).flat()
+        ? (hasGroups
+            ? activeGroup.categories.filter((c) => c !== "All").flatMap((c) => service.photoSets[c] || [])
+            : Object.values(service.photoSets).flat())
         : service.photoSets[active] || [])
     : null;
 
@@ -252,10 +283,29 @@ function ProjectsSection({ service }) {
           </span>
         </div>
 
-        {/* Category filter tabs */}
-        {service.categories.length > 2 && (
+        {/* Group tabs (top-level segregation, e.g. Apartment / Bungalow) */}
+        {hasGroups && (
+          <div className="flex flex-wrap gap-3 mb-5">
+            {service.groups.map((g, i) => (
+              <button
+                key={g.name}
+                onClick={() => selectGroup(i)}
+                className={`font-sans font-bold text-[13px] tracking-[0.25em] uppercase px-7 py-3.5 border-2 transition-all duration-300 ${
+                  groupIdx === i
+                    ? "border-[#B17457] bg-[#B17457] text-[#EDE9DF]"
+                    : "border-[#D9D3C3]/25 text-[#D9D3C3]/70 hover:border-[#B17457]/60 hover:text-[#D9D3C3]/90"
+                }`}
+              >
+                {g.name}
+              </button>
+            ))}
+          </div>
+        )}
+
+        {/* Category filter tabs (sub-level, only when the active group has them) */}
+        {(hasGroups ? activeGroup.categories : service.categories.length > 2 && service.categories) && (
           <div className="flex flex-wrap gap-2 mb-12">
-            {service.categories.map((cat) => (
+            {(hasGroups ? activeGroup.categories : service.categories).map((cat) => (
               <button
                 key={cat}
                 onClick={() => setActive(cat)}
@@ -265,7 +315,7 @@ function ProjectsSection({ service }) {
                     : "border-[#D9D3C3]/20 text-[#D9D3C3]/65 hover:border-[#B17457]/50 hover:text-[#D9D3C3]/85"
                 }`}
               >
-                {cat}
+                {CATEGORY_LABELS[cat] || cat}
               </button>
             ))}
           </div>
@@ -567,18 +617,23 @@ function ProjectCard({ project }) {
 /* ── 4. CTA ─────────────────────────────────────────────────────── */
 function CTASection() {
   const secRef   = useRef(null);
+  const imgRef   = useRef(null);
   const line1Ref = useRef(null);
   const line2Ref = useRef(null);
   const ctaRef   = useRef(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      gsap.to(imgRef.current, {
+        yPercent: -12, ease: "none",
+        scrollTrigger: { trigger: secRef.current, start: "top bottom", end: "bottom top", scrub: 1.5 },
+      });
       gsap.from([line1Ref.current, line2Ref.current], {
-        yPercent: 110, duration: 1.1, stagger: 0.12, ease: "power3.out",
-        scrollTrigger: { trigger: line1Ref.current, start: "top 82%", toggleActions: "play none none none" },
+        yPercent: 110, duration: 1.1, stagger: 0.14, ease: "power3.out",
+        scrollTrigger: { trigger: line1Ref.current, start: "top 80%", toggleActions: "play none none none" },
       });
       gsap.from(ctaRef.current, {
-        opacity: 0, y: 18, duration: 0.9, ease: "power3.out",
+        opacity: 0, y: 20, duration: 0.9, ease: "power3.out",
         scrollTrigger: { trigger: ctaRef.current, start: "top 85%", toggleActions: "play none none none" },
       });
     }, secRef);
@@ -586,36 +641,44 @@ function CTASection() {
   }, []);
 
   return (
-    <section ref={secRef} className="bg-[#1C1714] border-t border-[#D9D3C3]/8 py-24 lg:py-32 px-5 lg:px-12">
-      <div className="max-w-[1400px] mx-auto flex flex-col lg:flex-row items-start lg:items-center justify-between gap-10">
+    <section ref={secRef} className="relative overflow-hidden min-h-[500px] flex items-center">
+      <img ref={imgRef} src={hero6} alt="Book consultation" draggable={false}
+        className="absolute inset-0 w-full h-full object-cover scale-110 will-change-transform" />
+      <div className="absolute inset-0 bg-[#0F0D0C]/75" />
+      <div className="absolute inset-0 bg-gradient-to-r from-[#0F0D0C]/90 via-[#0F0D0C]/55 to-transparent" />
 
-        <h2 className="font-display text-[#EDE9DF] leading-tight"
-          style={{ fontSize: "clamp(2rem, 4vw, 3.5rem)", letterSpacing: "-0.01em" }}>
-          <div className="overflow-hidden pb-1">
-            <span ref={line1Ref} className="block">Ready to start</span>
-          </div>
-          <div className="overflow-hidden">
-            <span ref={line2Ref} className="block">
-              your <em className="not-italic text-[#B17457]">project?</em>
-            </span>
-          </div>
-        </h2>
+      <div className="relative z-10 max-w-[1400px] mx-auto px-8 lg:px-20 w-full py-24 lg:py-32">
+        <div className="max-w-xl flex flex-col gap-8">
 
-        <div ref={ctaRef} className="flex flex-col sm:flex-row gap-4">
-          <Link to="/contact"
-            className="inline-flex items-center gap-3 bg-[#B17457] text-[#EDE9DF] font-sans text-xs tracking-[0.2em] uppercase px-8 py-4 hover:bg-[#9a6245] transition-colors duration-300">
-            Book a Consultation
-            <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
-              <path d="M1 7H13M8 2L13 7L8 12" stroke="currentColor" strokeWidth="1.3"
-                strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </Link>
-          <Link to="/services"
-            className="inline-flex items-center gap-3 border border-[#D9D3C3]/25 text-[#D9D3C3]/72 font-sans text-xs tracking-[0.2em] uppercase px-8 py-4 hover:border-[#B17457]/50 hover:text-[#D9D3C3]/90 transition-all duration-300">
-            All Services
-          </Link>
+          <h2 className="font-display text-[#EDE9DF] leading-tight"
+            style={{ fontSize: "clamp(2rem, 5vw, 4.5rem)", letterSpacing: "-0.01em" }}>
+            <div className="overflow-hidden pb-1">
+              <span ref={line1Ref} className="block">Ready to start</span>
+            </div>
+            <div className="overflow-hidden">
+              <span ref={line2Ref} className="block">
+                your <em className="not-italic text-[#B17457]">project?</em>
+              </span>
+            </div>
+          </h2>
+
+          <div ref={ctaRef} className="flex flex-col gap-3">
+            <p className="font-sans text-[#D9D3C3]/72 text-sm font-light tracking-wide">
+              Let's do it on a Quick 30-Min Meet
+            </p>
+            <div>
+              <Link to="/contact"
+                className="inline-flex items-center gap-3 bg-[#B17457] text-[#EDE9DF] font-sans font-bold text-xs tracking-[0.2em] uppercase px-9 py-4 hover:bg-[#9a6245] transition-colors duration-300">
+                Book a Consultation
+                <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
+                  <path d="M1 7H13M8 2L13 7L8 12" stroke="currentColor" strokeWidth="1.3"
+                    strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </Link>
+            </div>
+          </div>
+
         </div>
-
       </div>
     </section>
   );

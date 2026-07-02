@@ -1,7 +1,8 @@
-﻿import { useEffect, useRef, useState } from "react";
+﻿import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import logo from "../assets/logo.png";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -20,51 +21,13 @@ const SOCIALS = [
   { label: "Facebook",  href: "https://www.facebook.com/" },
 ];
 
-const fldCls = [
-  "w-full bg-transparent",
-  "border-b border-[#D9D3C3]/30 focus:border-[#B17457]",
-  "font-sans text-[#B17457] text-xs",
-  "py-2 outline-none placeholder-[#D9D3C3]/45",
-  "transition-colors duration-300",
-].join(" ");
-
 export default function Footer() {
   const footerRef  = useRef(null);
   const bigTextRef = useRef(null);
   const gridRef    = useRef(null);
   const dividerRef = useRef(null);
 
-  const [sub, setSub]           = useState({ firstName: "", lastName: "", phone: "", email: "", consent: false });
-  const [done, setDone]         = useState(false);
-  const [loading, setLoading]   = useState(false);
-  const [consentError, setConsentError] = useState(false);
-
-  const setField = (k) => (e) =>
-    setSub((p) => ({ ...p, [k]: e.target.type === "checkbox" ? e.target.checked : e.target.value }));
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!sub.consent) { setConsentError(true); return; }
-    setConsentError(false);
-    setLoading(true);
-    try {
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: `${sub.firstName} ${sub.lastName}`.trim(),
-          email: sub.email,
-          phone: sub.phone,
-          service: "Newsletter / Community Sign-up",
-        }),
-      });
-      if (res.ok) setDone(true);
-    } catch {
-      setDone(true);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const marqueeTweenRef = useRef(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -80,20 +43,22 @@ export default function Footer() {
         scrollTrigger: { trigger: gridRef.current, start: "top 85%", toggleActions: "play none none none" },
       });
 
-      gsap.fromTo(bigTextRef.current,
-        { yPercent: 110 },
-        { yPercent: 0, duration: 1.2, ease: "power3.out",
-          scrollTrigger: { trigger: gridRef.current, start: "bottom 90%", toggleActions: "play none none none" },
-        }
-      );
+      // Continuous marquee loop — content is duplicated once, so -50% lines
+      // the second copy up exactly where the first started, for a seamless loop
+      marqueeTweenRef.current = gsap.to(bigTextRef.current, {
+        xPercent: -50,
+        duration: 22,
+        ease: "linear",
+        repeat: -1,
+      });
 
     }, footerRef);
 
     return () => ctx.revert();
   }, []);
 
-  const onEnter = () => gsap.to(bigTextRef.current, { color: "#B17457", duration: 0.45, ease: "power2.out" });
-  const onLeave = () => gsap.to(bigTextRef.current, { color: "#EDE9DF", duration: 0.45, ease: "power2.out" });
+  const pauseMarquee  = () => marqueeTweenRef.current?.pause();
+  const resumeMarquee = () => marqueeTweenRef.current?.resume();
 
   return (
     <footer ref={footerRef} className="bg-[#0A0908] w-full overflow-hidden">
@@ -105,110 +70,22 @@ export default function Footer() {
       {/* ── Main grid: Left | Mid | Right ───────────────────────── */}
       <div
         ref={gridRef}
-        className="max-w-[1400px] mx-auto px-5 lg:px-12 pt-20 pb-16
+        className="max-w-[1400px] mx-auto px-5 lg:px-12 pt-6 pb-16
                    grid grid-cols-2 md:grid-cols-[1.4fr_0.7fr_0.7fr] gap-10 md:gap-12 lg:gap-20"
       >
 
-        {/* ── LEFT: "Join the world" + subscribe form ─────────── */}
-        <div className="col-span-2 md:col-span-1 flex flex-col gap-8">
-
-          <div className="flex flex-col gap-4">
-            <h2
-              className="font-display text-[#EDE9DF] leading-[1.0]"
-              style={{ fontSize: "clamp(2rem, 3.5vw, 3.2rem)", letterSpacing: "-0.01em" }}
-            >
-              <span className="block">JOIN the</span>
-              <span className="block">WORLD</span>
-              <span className="block">of <em className="not-italic text-[#B17457]">DSQUARE DESIGNS</em></span>
-            </h2>
-            <p className="font-sans text-[#D9D3C3]/62 text-xs font-light leading-relaxed max-w-xs">
-              Have a project in mind? Let’s bring it to life..
-            </p>
-          </div>
-
-          {done ? (
-            <p className="font-sans text-[#B17457] text-xs tracking-wider">
-              Thank you — you're on the list.
-            </p>
-          ) : (
-            <form onSubmit={handleSubmit} className="flex flex-col gap-5 max-w-sm">
-
-              {/* First + Last */}
-              <div className="grid grid-cols-2 gap-5">
-                <div className="flex flex-col gap-1">
-                  <label className="font-sans text-[#FFFFFF] text-[10px] tracking-[0.3em] uppercase">
-                    First Name *
-                  </label>
-                  <input type="text" required value={sub.firstName} onChange={setField("firstName")}
-                    placeholder="First" className={fldCls} />
-                </div>
-                <div className="flex flex-col gap-1">
-                  <label className="font-sans text-[#FFFFFF] text-[10px] tracking-[0.3em] uppercase">
-                    Last Name *
-                  </label>
-                  <input type="text" required value={sub.lastName} onChange={setField("lastName")}
-                    placeholder="Last" className={fldCls} />
-                </div>
-              </div>
-
-              {/* Phone + Email */}
-              <div className="grid grid-cols-2 gap-5">
-                <div className="flex flex-col gap-1">
-                  <label className="font-sans text-[#FFFFFF] text-[10px] tracking-[0.3em] uppercase">
-                    Phone *
-                  </label>
-                  <input type="tel" required value={sub.phone} onChange={setField("phone")}
-                    placeholder="10-digit number" className={fldCls}
-                    pattern="[0-9]{10}" minLength={10} maxLength={10}
-                    title="Enter a valid 10-digit phone number" />
-                </div>
-                <div className="flex flex-col gap-1">
-                  <label className="font-sans text-[#FFFFFF] text-[10px] tracking-[0.3em] uppercase">
-                    Email
-                  </label>
-                  <input type="email" value={sub.email} onChange={setField("email")}
-                    placeholder="hello@email.com" className={fldCls} />
-                </div>
-              </div>
-
-              {/* Consent */}
-              <div className="flex flex-col gap-1.5 mt-1">
-                <label className="flex items-start gap-3 cursor-pointer group" onClick={() => setConsentError(false)}>
-                  <div className={`mt-0.5 w-3.5 h-3.5 border flex-shrink-0 flex items-center justify-center transition-colors duration-200
-                    ${consentError ? "border-red-400" : sub.consent ? "border-[#B17457] bg-[#B17457]" : "border-[#D9D3C3]/25 group-hover:border-[#B17457]/40"}`}>
-                    {sub.consent && (
-                      <svg width="8" height="6" viewBox="0 0 8 6" fill="none">
-                        <path d="M1 3L3 5L7 1" stroke="white" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-                    )}
-                  </div>
-                  <input type="checkbox" className="sr-only" checked={sub.consent} onChange={setField("consent")} />
-                  <span className="font-sans text-[#FFFFFF] text-[10px] leading-relaxed">
-                    I consent to my information being collected in accordance with the Dsquare Design privacy policy *
-                  </span>
-                </label>
-                {consentError && (
-                  <p className="font-sans text-red-400 text-[9px] tracking-wide pl-6">
-                    Please accept the consent to submit.
-                  </p>
-                )}
-              </div>
-
-              {/* Submit */}
-              <button type="submit" disabled={loading}
-                className="group self-start inline-flex items-center gap-3 bg-[#B17457] text-[#EDE9DF] font-sans text-[10px] tracking-[0.35em] uppercase px-7 py-3.5 hover:bg-[#9a6245] transition-colors duration-300 mt-1 disabled:opacity-60 disabled:cursor-not-allowed">
-                {loading ? "Sending…" : "Submit Form"}
-                {!loading && (
-                  <svg width="11" height="11" viewBox="0 0 14 14" fill="none"
-                    className="group-hover:translate-x-1 transition-transform duration-200">
-                    <path d="M1 7H13M8 2L13 7L8 12" stroke="currentColor" strokeWidth="1.3"
-                      strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                )}
-              </button>
-
-            </form>
-          )}
+        {/* ── LEFT: Logo + about ─────────────────────────────── */}
+        <div className="col-span-2 md:col-span-1 flex flex-col gap-5">
+          <Link to="/" className="flex items-center flex-shrink-0 -ml-2 -mt-8">
+            <img
+              src={logo}
+              alt="DSquare Interior Design"
+              className="h-40 w-auto object-contain"
+            />
+          </Link>
+          <p className="font-sans text-[#D9D3C3]/62 text-xs font-light leading-relaxed max-w-xs">
+            DSquare Designs crafts refined interiors and spaces that blend timeless elegance with modern sensibility. From residences to hospitality and commercial spaces, every project is shaped with precision, care and a deep respect for how people live and work.
+          </p>
         </div>
 
         {/* ── MIDDLE: Navigation ───────────────────────────────── */}
@@ -247,22 +124,27 @@ export default function Footer() {
 
       </div>
 
-      {/* ── Big DSQUARE — left-aligned, full width ──────────────── */}
-      <div className="overflow-hidden w-full mt-4">
-        <p
-          ref={bigTextRef}
-          onMouseEnter={onEnter}
-          onMouseLeave={onLeave}
-          className="font-display font-bold text-[#EDE9DF] leading-none select-none cursor-default"
-          style={{
-            fontSize: "clamp(5rem, 11.5vw, 22rem)",
-            letterSpacing: "-0.03em",
-            lineHeight: 0.88,
-            paddingLeft: "0.02em",
-          }}
-        >
-          DSQUARE DESIGNS
-        </p>
+      {/* ── DSQUARE — continuous marquee ──────────────────────── */}
+      <div
+        className="overflow-hidden w-full mt-4 py-2"
+        onMouseEnter={pauseMarquee}
+        onMouseLeave={resumeMarquee}
+      >
+        <div ref={bigTextRef} className="flex whitespace-nowrap select-none cursor-default will-change-transform">
+          {[0, 1].map((group) => (
+            <div key={group} className="flex items-center flex-shrink-0">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <span key={i}
+                  className="font-display font-bold text-[#EDE9DF] leading-none"
+                  style={{ fontSize: "clamp(1.6rem, 3vw, 3.2rem)", letterSpacing: "-0.02em" }}
+                >
+                  DSQUARE DESIGNS
+                  <span className="text-[#B17457] px-6">•</span>
+                </span>
+              ))}
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* ── Bottom bar ──────────────────────────────────────────── */}

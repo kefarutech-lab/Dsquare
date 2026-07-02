@@ -1,10 +1,10 @@
-﻿import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import gsap from "gsap";
 import logo from "../assets/logo.png";
 
 const NAV_ITEMS = [
-  { label: "Featured Project",  href: "/work" },
+  { label: "Our Work",  href: "/work" },
   { label: "Services",  href: "/services" },
   { label: "Approach",  href: "/approach" },
   { label: "About",     href: "/about" },
@@ -217,24 +217,32 @@ export default function Navbar() {
     );
   }, []);
 
-  // ── Scroll: visible only inside hero section, hidden otherwise ──
+  // ── Scroll: hide on down, show on up, transparent → solid ──
   useEffect(() => {
     const header = headerRef.current;
-    const HERO_THRESHOLD = 120;
-    let visible = true;
+    let lastY = 0;
+    let hidden = false;
 
     const onScroll = () => {
       const y = window.scrollY;
-      const inHero = y < HERO_THRESHOLD;
+      const scrollingDown = y > lastY;
 
-      // Show only within hero, hide as soon as it's scrolled past — regardless of direction
-      if (inHero && !visible) {
-        gsap.to(header, { yPercent: 0, duration: 0.45, ease: "power3.out", overwrite: "auto" });
-        visible = true;
-      } else if (!inHero && visible) {
+      // Background: transparent at top, dark+blur when scrolled
+      const bg = y > 60 ? "rgba(15, 13, 12, 0.92)" : "rgba(15, 13, 12, 0)";
+      gsap.to(header, { backgroundColor: bg, duration: 0.35, overwrite: "auto" });
+      header.style.backdropFilter       = y > 60 ? "blur(12px)" : "none";
+      header.style.webkitBackdropFilter = y > 60 ? "blur(12px)" : "none";
+
+      // Hide / show
+      if (scrollingDown && y > 120 && !hidden) {
         gsap.to(header, { yPercent: -100, duration: 0.35, ease: "power3.in", overwrite: "auto" });
-        visible = false;
+        hidden = true;
+      } else if (!scrollingDown && hidden) {
+        gsap.to(header, { yPercent: 0, duration: 0.45, ease: "power3.out", overwrite: "auto" });
+        hidden = false;
       }
+
+      lastY = y;
     };
 
     window.addEventListener("scroll", onScroll, { passive: true });

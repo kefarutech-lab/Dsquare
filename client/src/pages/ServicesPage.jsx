@@ -1,4 +1,4 @@
-﻿import { useEffect, useRef, useState } from "react";
+﻿import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -11,24 +11,13 @@ import hero6 from "../assets/hero/hero6.avif";
 
 gsap.registerPlugin(ScrollTrigger);
 
-/* ── Load featured project hero images ─────────────────────────── */
+/* ── Service panel background images ───────────────────────────── */
 function toHero(glob, fallback) {
   return Object.values(glob)[0]?.default ?? fallback;
 }
-
-const jagtapHero  = toHero(import.meta.glob("../assets/projects/jagtap/hero.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}",              { eager: true }), hero3);
-const butteHero   = toHero(import.meta.glob("../assets/projects/butte-patil/hero.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}",         { eager: true }), hero1);
-const turaHero    = toHero(import.meta.glob("../assets/projects/tura/hero.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}",                { eager: true }), hero2);
-const savitriHero = toHero(import.meta.glob("../assets/projects/savitri-corps/hero.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}",       { eager: true }), hero4);
-const acaiHero    = toHero(import.meta.glob("../assets/projects/acai-hotel/hero.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}",          { eager: true }), hero5);
-const finupHero   = toHero(import.meta.glob("../assets/projects/finup-consultancy/hero.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}",   { eager: true }), hero4);
-const pcPatilHero = toHero(import.meta.glob("../assets/projects/ca-official/hero.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}",         { eager: true }), hero6);
-
-/* ── Service panel background images ───────────────────────────── */
 const panelInterior    = toHero(import.meta.glob("../assets/services/panels/interior-design/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}", { eager: true }), hero1);
 const panelCommercial  = toHero(import.meta.glob("../assets/services/panels/commercial/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}",      { eager: true }), hero2);
 const panelHospitality = toHero(import.meta.glob("../assets/services/panels/hospitality/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}",    { eager: true }), hero6);
-const panelDevelopment = toHero(import.meta.glob("../assets/services/panels/development/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}",    { eager: true }), hero4);
 
 /* ── Data ──────────────────────────────────────────────────────── */
 const SERVICE_PANELS = [
@@ -52,13 +41,6 @@ const SERVICE_PANELS = [
     image: panelHospitality,
     thumb: hero5,
     desc: "We create branded hospitality environments that leave lasting impressions — from intimate cafés to landmark venues — where every material choice, every detail, contributes to the story of the place.",
-  },
-  {
-    name: "Project Development",
-    slug: "development",
-    image: panelDevelopment,
-    thumb: hero1,
-    desc: "With in-house expertise across interior design and project management, we offer a fully integrated service — from initial concept and spatial planning through to architectural detailing, installation and handover.",
   },
 ];
 
@@ -94,15 +76,6 @@ const PROCESS_STEPS = [
   },
 ];
 
-const OBJECTS = [
-  { image: jagtapHero,  title: "Jagtap Residence",           desc: "A contemporary family home designed around natural light, spatial flow and the quiet luxury of considered living." },
-  { image: butteHero,   title: "Butte Patil Residence",      desc: "A refined family home balancing elegant aesthetics with the warmth of everyday living — luxurious and deeply personal." },
-  { image: turaHero,    title: "Tura Residence",             desc: "Contemporary elegance and warmth of considered living, shaped through proportion, material quality and natural light." },
-  { image: savitriHero, title: "Savitri Corps",              desc: "Generous, composed and quietly refined spaces — a home that lives as beautifully as it looks." },
-  { image: acaiHero,    title: "Acai — Café & Hospitality",  desc: "A boutique hospitality experience where vibrant energy meets intimately considered design and layered materiality." },
-  { image: finupHero,   title: "Finup Consultancy Office",   desc: "A professional workspace that feels authoritative yet approachable — precision and purpose in every detail." },
-  { image: pcPatilHero, title: "PC Patil Office",            desc: "A chartered accountancy interior projecting quiet authority — disciplined layout, premium materials, enduring form." },
-];
 
 /* ═══════════════════════════════════════════════════════════════ */
 import SEO from "../components/SEO";
@@ -120,7 +93,6 @@ export default function ServicesPage() {
       <EditorialSection />
       <ServicePanelsSection />
       <ProcessSection />
-      <ObjectsDesireSection />
     </main>
   );
 }
@@ -425,216 +397,5 @@ function ProcessSection() {
   );
 }
 
-/* ── 5. Objects of Desire ───────────────────────────────────────── */
-function ObjectsDesireSection() {
-  const [active, setActive] = useState(2);
-  const secRef     = useRef(null);
-  const headRef    = useRef(null);
-  const lineRef    = useRef(null);
-  const trackRef   = useRef(null);
-  const infoRef    = useRef(null);
-  const titleRef   = useRef(null);
-  const descRef    = useRef(null);
-  const dotsRef    = useRef(null);
-  const slotRefs   = useRef([]);
-  const touchStartX = useRef(null);
-
-  const prev = () => setActive((i) => (i - 1 + OBJECTS.length) % OBJECTS.length);
-  const next = () => setActive((i) => (i + 1) % OBJECTS.length);
-
-  const onTouchStart = (e) => { touchStartX.current = e.touches[0].clientX; };
-  const onTouchEnd   = (e) => {
-    if (touchStartX.current === null) return;
-    const diff = touchStartX.current - e.changedTouches[0].clientX;
-    if (Math.abs(diff) > 40) diff > 0 ? next() : prev();
-    touchStartX.current = null;
-  };
-
-  /* ── Scroll entrance ─────────────────────────────────────── */
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-
-      /* Heading word reveal */
-      gsap.from(headRef.current, {
-        opacity: 0, y: 40, duration: 1.1, ease: "power3.out",
-        scrollTrigger: { trigger: headRef.current, start: "top 85%", toggleActions: "play none none none" },
-      });
-
-      /* Decorative line draws in */
-      gsap.from(lineRef.current, {
-        scaleX: 0, duration: 0.9, ease: "power2.out", transformOrigin: "center center",
-        scrollTrigger: { trigger: lineRef.current, start: "top 88%", toggleActions: "play none none none" },
-      });
-
-      /* Carousel slots stagger in from bottom */
-      gsap.from(slotRefs.current.filter(Boolean), {
-        opacity: 0, y: 60, scale: 0.92,
-        duration: 0.9, stagger: 0.1, ease: "power3.out",
-        scrollTrigger: { trigger: trackRef.current, start: "top 82%", toggleActions: "play none none none" },
-      });
-
-      /* Info block */
-      gsap.from(infoRef.current, {
-        opacity: 0, y: 24, duration: 0.9, ease: "power3.out",
-        scrollTrigger: { trigger: infoRef.current, start: "top 88%", toggleActions: "play none none none" },
-      });
-
-      /* Dots */
-      gsap.from(dotsRef.current, {
-        opacity: 0, y: 14, duration: 0.7, ease: "power3.out",
-        scrollTrigger: { trigger: dotsRef.current, start: "top 92%", toggleActions: "play none none none" },
-      });
-
-    }, secRef);
-    return () => ctx.revert();
-  }, []);
-
-  /* ── Text fade on slide change ───────────────────────────── */
-  useEffect(() => {
-    if (titleRef.current)
-      gsap.fromTo(titleRef.current,
-        { opacity: 0, y: 10 },
-        { opacity: 1, y: 0, duration: 0.38, ease: "power2.out" }
-      );
-    if (descRef.current)
-      gsap.fromTo(descRef.current,
-        { opacity: 0, y: 10 },
-        { opacity: 1, y: 0, duration: 0.38, ease: "power2.out", delay: 0.07 }
-      );
-  }, [active]);
-
-  /* visible slots: relative indices -2 to +2 */
-  const slots = [-2, -1, 0, 1, 2];
-  const W     = [120, 200, 320, 200, 120];
-  const H     = [160, 260, 440, 260, 160];
-  const OP    = [0.35, 0.65, 1, 0.65, 0.35];
-
-  return (
-    <section ref={secRef} className="bg-[#0F0D0C] py-24 lg:py-36 overflow-hidden">
-      <div className="max-w-[1400px] mx-auto px-5 lg:px-12">
-
-        {/* Heading */}
-        <div ref={headRef} className="text-center mb-4">
-          <h2 className="font-display text-[#EDE9DF]"
-            style={{ fontSize: "clamp(2rem, 5vw, 4.5rem)", letterSpacing: "0.04em" }}>
-            FEATURED <em className="not-italic text-[#B17457]">Projects</em>
-          </h2>
-        </div>
-        <div ref={lineRef} className="w-10 h-px bg-[#B17457] mx-auto mb-16"
-          style={{ transformOrigin: "center center" }} />
-
-        {/* ── Mobile: single-slide carousel ── */}
-        <div
-          ref={trackRef}
-          className="lg:hidden relative overflow-hidden"
-          style={{ aspectRatio: "4/3" }}
-          onTouchStart={onTouchStart}
-          onTouchEnd={onTouchEnd}
-        >
-          <img
-            src={OBJECTS[active].image}
-            alt={OBJECTS[active].title}
-            draggable={false}
-            className="w-full h-full object-cover transition-opacity duration-500"
-          />
-          <div className="absolute inset-0 bg-[#0F0D0C]/20" />
-          <div className="absolute -inset-[5px] border-2 border-[#B17457] pointer-events-none" />
-
-          {/* Prev */}
-          <button
-            onClick={prev}
-            aria-label="Previous"
-            className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 bg-[#0F0D0C]/60 border border-[#D9D3C3]/20 flex items-center justify-center text-[#D9D3C3]/80 hover:border-[#B17457] hover:text-[#B17457] transition-colors duration-300"
-          >
-            <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
-              <path d="M13 7H1M6 2L1 7L6 12" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </button>
-
-          {/* Next */}
-          <button
-            onClick={next}
-            aria-label="Next"
-            className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 bg-[#0F0D0C]/60 border border-[#D9D3C3]/20 flex items-center justify-center text-[#D9D3C3]/80 hover:border-[#B17457] hover:text-[#B17457] transition-colors duration-300"
-          >
-            <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
-              <path d="M1 7H13M8 2L13 7L8 12" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </button>
-        </div>
-
-        {/* ── Desktop: 5-slot fan carousel ── */}
-        <div className="hidden lg:flex items-center justify-center gap-6">
-          {slots.map((offset, si) => {
-            const idx      = (active + offset + OBJECTS.length) % OBJECTS.length;
-            const item     = OBJECTS[idx];
-            const isCenter = offset === 0;
-
-            return (
-              <div
-                key={si}
-                ref={(el) => (slotRefs.current[si] = el)}
-                onClick={offset !== 0 ? (offset < 0 ? prev : next) : undefined}
-                className="relative flex-shrink-0 overflow-hidden transition-all duration-500"
-                style={{
-                  width:   W[si],
-                  height:  H[si],
-                  opacity: OP[si],
-                  cursor:  isCenter ? "default" : "pointer",
-                }}
-              >
-                {isCenter && (
-                  <div className="absolute -inset-[6px] border-2 border-[#B17457] z-10 pointer-events-none" />
-                )}
-                <img src={item.image} alt={item.title} draggable={false}
-                  className="w-full h-full object-cover transition-transform duration-700 hover:scale-105" />
-                <div className="absolute inset-0 bg-[#0F0D0C]/20" />
-              </div>
-            );
-          })}
-
-          {/* Next arrow */}
-          <button
-            onClick={next}
-            className="ml-4 w-10 h-10 border border-[#D9D3C3]/20 flex items-center justify-center text-[#D9D3C3]/62 hover:border-[#B17457] hover:text-[#B17457] transition-colors duration-300 flex-shrink-0"
-          >
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-              <path d="M1 7H13M8 2L13 7L8 12" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </button>
-        </div>
-
-        {/* Active item info — fades on change */}
-        <div ref={infoRef} className="text-center mt-10">
-          <p ref={titleRef} className="font-display text-[#EDE9DF] text-lg lg:text-xl tracking-wide mb-3">
-            {OBJECTS[active].title}
-          </p>
-          <p ref={descRef} className="font-sans text-[#D9D3C3]/62 text-sm font-light max-w-sm mx-auto leading-relaxed">
-            {OBJECTS[active].desc}
-          </p>
-        </div>
-
-        {/* Dots nav */}
-        <div ref={dotsRef} className="flex justify-center gap-2 mt-8">
-          {OBJECTS.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setActive(i)}
-              className="transition-all duration-300"
-              style={{
-                width:           i === active ? "22px" : "6px",
-                height:          "3px",
-                borderRadius:    "1px",
-                backgroundColor: i === active ? "#B17457" : "#D9D3C3",
-                opacity:         i === active ? 1 : 0.25,
-              }}
-            />
-          ))}
-        </div>
-
-      </div>
-    </section>
-  );
-}
 
 

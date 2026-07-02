@@ -28,7 +28,7 @@ function firstPhoto(glob, fallback) {
 const TESTIMONIALS = [
   {
     quote: "Working with DSquare Designs was a truly seamless experience. They listened carefully to our vision and delivered a space that feels luxurious, personal and completely us. Every corner reflects the quality and care they bring to their work.",
-    name: "Nitin Deshmukh",
+    name: "Nitin Deshmukh (Finup Consultancy Office)",
     initials: "ND",
     image: firstPhoto(
       import.meta.glob("../assets/testimonials/nitin-deshmukh/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}", { eager: true }),
@@ -37,7 +37,7 @@ const TESTIMONIALS = [
   },
   {
     quote: "Dsquare Designs transformed our house into a space that feels both elegant and comfortable. Their attention to detail, creativity, and understanding of our vision made the entire process smooth and stress-free. We couldn’t be happier with the final result.",
-    name: "Sangram Murkute",
+    name: "Sangram Murkute (Murkute Residency)",
     initials: "SM",
     image: firstPhoto(
       import.meta.glob("../assets/testimonials/sangram-murkute/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}", { eager: true }),
@@ -46,7 +46,7 @@ const TESTIMONIALS = [
   },
   {
     quote: "From the first consultation to the final handover, the Dsquare Designs team was exceptional. They understood exactly what we wanted — a modern, warm home that works for our family. The result exceeded every expectation we had.",
-    name: "Nikhil Misal",
+    name: "Nikhil Misal (Misal Residency)",
     initials: "RB",
     image: firstPhoto(
       import.meta.glob("../assets/testimonials/nikhil-misal/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}", { eager: true }),
@@ -55,7 +55,7 @@ const TESTIMONIALS = [
   },
   {
     quote: "We wanted an office space that felt modern, functional, and inspiring for our team, and Dsquare Designs delivered exactly that. Their smart space planning, attention to detail, and seamless execution created a workspace that perfectly reflects our brand and culture.",
-    name: "Sejal Sapre",
+    name: "Sejal Sapre (Corporate office)",
     initials: "SS",
     image: firstPhoto(
       import.meta.glob("../assets/testimonials/sejal-sapre/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}", { eager: true }),
@@ -64,7 +64,7 @@ const TESTIMONIALS = [
   },
   {
     quote: "Dsquare Design team designed our residence with a level of thoughtfulness that was truly remarkable. They balanced aesthetics and functionality perfectly. The space is beautiful, practical and everything we dreamed it would be.",
-    name: "Bharat Jagtap",
+    name: "Bharat Jagtap (Jagtap Residency)",
     initials: "BJ",
     image: firstPhoto(
       import.meta.glob("../assets/testimonials/bharat-jagtap/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}", { eager: true }),
@@ -73,7 +73,7 @@ const TESTIMONIALS = [
   },
   {
     quote: "The team at Dsquare Designs brought so much creativity and professionalism to our project. They guided us through every decision with patience and expertise. Our home now feels like a true reflection of who we are.",
-    name: "Rujuta Kulkarni",
+    name: "Rujuta Kulkarni (Kulkarni Residency)",
     initials: "RK",
     image: firstPhoto(
       import.meta.glob("../assets/testimonials/rujuta-kulkarni/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}", { eager: true }),
@@ -82,7 +82,7 @@ const TESTIMONIALS = [
   },
   {
     quote: "We engaged Dsquare Designs for a complete interior overhaul and we couldn't be happier. The quality of their work speaks for itself — every space feels elevated, considered and distinctly ours. Highly recommend their services.",
-    name: "Sangita Bera",
+    name: "Sangita Bera (Bera Residency)",
     initials: "SB",
     image: firstPhoto(
       import.meta.glob("../assets/testimonials/sangita-bera/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}", { eager: true }),

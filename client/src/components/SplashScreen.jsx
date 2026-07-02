@@ -3,24 +3,31 @@ import gsap from "gsap";
 import logo from "../assets/logo.png";
 
 export default function SplashScreen({ onComplete }) {
-  const overlayRef   = useRef(null);
-  const logoRef      = useRef(null);
-  const labelRef     = useRef(null);
-  const progressRef  = useRef(null);
-  const counterRef   = useRef(null);
-  const countObj     = useRef({ val: 0 });
+  const overlayRef    = useRef(null);
+  const logoRef       = useRef(null);
+  const labelRef      = useRef(null);
+  const progressRef   = useRef(null);
+  const counterRef    = useRef(null);
+  const countObj      = useRef({ val: 0 });
+  const onCompleteRef = useRef(onComplete);
+
+  // Keep ref current without adding it as an effect dependency
+  useEffect(() => { onCompleteRef.current = onComplete; });
 
   useEffect(() => {
     let completed = false;
 
-    const tl = gsap.timeline({
-      onComplete: () => {
-        if (!completed) {
-          completed = true;
-          if (onComplete) onComplete();
-        }
-      },
-    });
+    const finish = () => {
+      if (!completed) {
+        completed = true;
+        onCompleteRef.current?.();
+      }
+    };
+
+    // Failsafe: force-complete after 7 s in case GSAP stalls
+    const failsafe = setTimeout(finish, 7000);
+
+    const tl = gsap.timeline({ onComplete: finish });
 
     // ── Logo fade in ─────────────────────────────────────────
     tl.from(logoRef.current, {
@@ -68,8 +75,11 @@ export default function SplashScreen({ onComplete }) {
       ease: "power2.inOut",
     });
 
-    return () => tl.kill();
-  }, [onComplete]);
+    return () => {
+      tl.kill();
+      clearTimeout(failsafe);
+    };
+  }, []); // run once — onComplete is accessed via ref
 
   return (
     <div

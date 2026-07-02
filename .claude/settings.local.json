@@ -34,7 +34,8 @@
       "PowerShell(Get-ChildItem 'e:\\\\Dsquare\\\\client' -Force | Where-Object {$_.Name -match 'dist'})",
       "PowerShell(Get-ChildItem 'e:\\\\Dsquare\\\\client\\\\dist' | Select-Object Name, @{Name='Size';Expression={$_.Length}} | head -20)",
       "PowerShell(Get-ChildItem 'e:\\\\Dsquare\\\\client\\\\dist' | Select-Object Name, @{Name='Size';Expression={$_.Length}} | Select-Object -First 20)",
-      "Bash(xargs sed *)"
+      "Bash(xargs sed *)",
+      "Bash(npm run *)"
     ]
   }
 }

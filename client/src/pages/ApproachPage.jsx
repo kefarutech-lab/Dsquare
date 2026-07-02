@@ -15,7 +15,7 @@ gsap.registerPlugin(ScrollTrigger);
 const STEPS = [
   {
     num: "01",
-    name: "Understand",
+    name: "Consultation",
     desc: "We begin by listening. We understand your needs, lifestyle, preferences, budget and vision before a single line is drawn.",
     bullets: ["In-depth consultation", "Site visit & space analysis", "Requirement gathering"],
     image: hero2,
@@ -31,7 +31,7 @@ const STEPS = [
   },
   {
     num: "02",
-    name: "Conceptualize",
+    name: "Conceptualization",
     desc: "We translate your aspirations into concepts that reflect your unique identity and meet every functional requirement of the space.",
     bullets: ["Mood boards & inspiration", "Layout planning", "Concept development"],
     image: hero3,
@@ -48,7 +48,7 @@ const STEPS = [
   },
   {
     num: "03",
-    name: "Design & Plan",
+    name: "Curation",
     desc: "We create detailed designs and plans with complete material selection that bring clarity and creative direction to every aspect of your project.",
     bullets: ["3D visualizations", "Material & finish selection", "Technical drawings & planning"],
     image: hero1,
@@ -63,7 +63,7 @@ const STEPS = [
   },
   {
     num: "04",
-    name: "Execute",
+    name: "Visualization",
     desc: "Our expert team brings the design to life with meticulous attention to detail, precision craftsmanship and proactive project management throughout.",
     bullets: ["Site execution & supervision", "Skilled craftsmanship", "Regular updates & quality checks"],
     image: hero5,
@@ -76,7 +76,20 @@ const STEPS = [
   },
   {
     num: "05",
-    name: "Deliver",
+    name: "Realization",
+    desc: "Our team transforms the approved vision into reality with seamless coordination, exceptional craftsmanship, and unwavering attention to quality at every stage.",
+    bullets: ["End-to-end project execution", "Precision workmanship & detailing", "Timely delivery with quality assurance"],
+    image: hero1,
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4"
+        strokeLinecap="round" strokeLinejoin="round" className="w-8 h-8">
+        <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+      </svg>
+    ),
+  },
+  {
+    num: "06",
+    name: "Handover",
     desc: "We complete the journey by delivering a refined, perfected space — ensuring every detail is immaculate before the final handover.",
     bullets: ["Final styling & detailing", "Handover & walkthrough", "After-service support"],
     image: hero6,
@@ -151,11 +164,11 @@ function HeroSection() {
         <h1 className="font-display text-[#EDE9DF] leading-tight"
           style={{ fontSize: "clamp(3rem, 7vw, 7rem)", letterSpacing: "-0.02em" }}>
           <div className="overflow-hidden pb-1">
-            <span ref={line1Ref} className="block">Our Process,</span>
+            <span ref={line1Ref} className="block">Our Tailored</span>
           </div>
           <div className="overflow-hidden">
             <span ref={line2Ref} className="block">
-              Designed <em className="not-italic text-[#B17457]">for You</em>
+              Designed <em className="not-italic text-[#B17457]">Journey</em>
             </span>
           </div>
         </h1>
@@ -199,14 +212,14 @@ function IntroSection() {
         <span className="w-10 h-px bg-[#B17457]/40" />
       </div>
 
-      <h2 className="font-display text-[#EDE9DF]"
-        style={{ fontSize: "clamp(2.2rem, 5vw, 4.5rem)", letterSpacing: "-0.01em" }}>
-        <div className="overflow-hidden pb-1">
-          <span ref={line1Ref} className="block">From Concept</span>
-        </div>
-        <div className="overflow-hidden">
-          <em ref={line2Ref} className="block not-italic text-[#B17457]">to Creation</em>
-        </div>
+      <h2 className="font-display text-[#EDE9DF] whitespace-nowrap"
+        style={{ fontSize: "clamp(1.6rem, 5vw, 4.5rem)", letterSpacing: "-0.01em" }}>
+        <span className="overflow-hidden inline-block pb-1 align-bottom">
+          <span ref={line1Ref} className="inline-block">From Concept&nbsp;</span>
+        </span>
+        <span className="overflow-hidden inline-block pb-1 align-bottom">
+          <em ref={line2Ref} className="inline-block not-italic text-[#B17457]">to Creation</em>
+        </span>
       </h2>
 
       <p ref={subRef} className="font-sans text-[#D9D3C3]/58 text-sm font-light mt-5 max-w-lg mx-auto leading-relaxed">
@@ -465,7 +478,7 @@ function StatsSection() {
             <p className="font-display text-[#EDE9DF] leading-tight"
               style={{ fontSize: "clamp(1.3rem, 2.2vw, 1.9rem)" }}>
               Ready to start your journey<br />
-              with <em className="not-italic text-[#B17457]">DSquare?</em>
+              with <em className="not-italic text-[#B17457]">DSquare Design?</em>
             </p>
             <Link to="/contact"
               className="self-start inline-flex items-center gap-3 border border-[#B17457] text-[#B17457] font-sans text-xs tracking-[0.2em] uppercase px-7 py-3.5 hover:bg-[#B17457] hover:text-white transition-all duration-300">

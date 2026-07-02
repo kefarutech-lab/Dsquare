@@ -4,8 +4,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import hero1 from "../assets/hero/hero1.avif";
 import hero2 from "../assets/hero/hero2.avif";
-import hero6 from "../assets/hero/hero6.avif";
-import hero4 from "../assets/hero/hero4.avif";
+import hotel6 from "../assets/hotel6.jpeg";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -16,21 +15,18 @@ function pickOne(glob, fallback) {
 
 const residentialImg = pickOne(import.meta.glob("../assets/services/residential.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}", { eager: true }), hero1);
 const commercialImg  = pickOne(import.meta.glob("../assets/services/commercial.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}",  { eager: true }), hero2);
-const hospitalityImg = pickOne(import.meta.glob("../assets/services/hospitality.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}", { eager: true }), hero6);
-const developmentImg = pickOne(import.meta.glob("../assets/services/development.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}", { eager: true }), hero4);
+const hospitalityImg = pickOne(import.meta.glob("../assets/hotel6.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}", { eager: true }), hotel6);
 
 const SLIDES = [
   { word: "RESIDENTIAL", image: residentialImg, route: "/services/interior-design" },
   { word: "COMMERCIAL",  image: commercialImg,  route: "/services/commercial"       },
   { word: "HOSPITALITY", image: hospitalityImg, route: "/services/hospitality"      },
-  { word: "DEVELOPMENT", image: developmentImg, route: "/services/development"      },
 ];
 
 const X_SCATTER = {
   RESIDENTIAL: [-8, 5, -12, 9, -6, 14, -10, 7, -15, 11, -5],
   COMMERCIAL:  [-10, 7, -8, 12, -5, -14, 9, -7, 13, -6],
   HOSPITALITY: [-9, 6, -13, 8, -5, 15, -11, 7, -8, 12, -6],
-  DEVELOPMENT: [-7, 10, -12, 6, -15, 8, -9, 13, -5, 11, -8],
 };
 
 /* ═══════════════════════════════════════════════════════════════════ */
@@ -125,11 +121,11 @@ function MobileCarousel() {
                 <div className="absolute inset-0 bg-[#0F0D0C]/45" />
                 <div className="absolute bottom-0 left-0 right-0 h-2/5 bg-gradient-to-t from-[#0F0D0C]/85 to-transparent" />
 
-                {/* Giant word */}
-                <div className="absolute top-0 left-0 right-0 overflow-hidden"
-                  style={{ paddingTop: "0.05em", paddingLeft: "1vw", paddingRight: "1vw" }}>
+                {/* Giant word — upper-center of image */}
+                <div className="absolute top-0 left-0 right-0 flex justify-center"
+                  style={{ paddingTop: "0.08em" }}>
                   <span
-                    className="font-display text-[#EDE9DF] select-none block w-full"
+                    className="font-display text-[#EDE9DF] select-none text-center"
                     style={{ fontSize: fSize, lineHeight: 1, letterSpacing: "0.02em" }}>
                     {slide.word}
                   </span>

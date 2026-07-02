@@ -3,8 +3,12 @@ import { Link } from "react-router-dom";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import hero1 from "../assets/hero/hero1.avif";
-import hero3 from "../assets/hero/hero3.avif";
+import _hero3Fallback from "../assets/hero/hero3.avif";
 import hero6 from "../assets/hero/hero6.avif";
+
+/* Drop your photo into client/src/assets/about-story/ to replace the left image */
+const _storyGlob = import.meta.glob("../assets/about-story/*.{jpg,jpeg,png,webp,avif,JPG,JPEG,PNG,WEBP,AVIF}", { eager: true });
+const storyImg = Object.values(_storyGlob)[0]?.default ?? _hero3Fallback;
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -58,13 +62,6 @@ const PHILOSOPHY = [
   },
 ];
 
-const PROCESS_STEPS = [
-  { num: "01", name: "Discover",       desc: "We understand your needs, lifestyle, and vision." },
-  { num: "02", name: "Conceptualize",  desc: "We create design ideas and mood boards." },
-  { num: "03", name: "Design & Plan",  desc: "Detailed layouts, materials & 3D visuals." },
-  { num: "04", name: "Execute",        desc: "Bringing designs to life with precision." },
-  { num: "05", name: "Deliver",        desc: "Final handover with perfection." },
-];
 
 const STATS = [
   { value: 15, suffix: "+", label: "Years Experience" },
@@ -132,7 +129,7 @@ export default function AboutPage() {
       <HeroSection />
       <OurStorySection />
       <PhilosophySection />
-      <ProcessSection />
+
       <StatsSection />
       <TeamSection />
 <CTASection />
@@ -144,7 +141,6 @@ export default function AboutPage() {
 function HeroSection() {
   const secRef   = useRef(null);
   const imgRef   = useRef(null);
-  const tagRef   = useRef(null);
   const line1Ref = useRef(null);
   const line2Ref = useRef(null);
   const subRef   = useRef(null);
@@ -155,7 +151,6 @@ function HeroSection() {
         yPercent: -15, ease: "none",
         scrollTrigger: { trigger: secRef.current, start: "top top", end: "bottom top", scrub: 1.5 },
       });
-      gsap.from(tagRef.current,  { opacity: 0, y: 14, duration: 0.7, ease: "power3.out", delay: 0.35 });
       gsap.from([line1Ref.current, line2Ref.current], {
         yPercent: 110, duration: 1.2, stagger: 0.14, ease: "power4.out", delay: 0.5,
       });
@@ -171,12 +166,8 @@ function HeroSection() {
       <div className="absolute inset-0 bg-[#0F0D0C]/60" />
       <div className="absolute inset-0 bg-gradient-to-r from-[#0F0D0C]/85 via-[#0F0D0C]/40 to-transparent" />
 
-      <div className="absolute inset-0 flex items-center px-8 lg:px-20 xl:px-32">
+      <div className="absolute inset-0 flex items-center px-8 lg:px-20 xl:px-32 pt-24 lg:pt-32">
         <div className="max-w-[680px]">
-          <div ref={tagRef} className="flex items-center gap-3 mb-8">
-            <span className="w-8 h-px bg-[#B17457]" />
-            <span className="font-sans text-[#B17457] text-[10px] tracking-[0.4em] uppercase">About Us</span>
-          </div>
           <h1 className="font-display text-[#EDE9DF] leading-tight mb-7"
             style={{ fontSize: "clamp(2.5rem, 5.5vw, 5.5rem)", letterSpacing: "-0.01em" }}>
             <div className="overflow-hidden pb-1">
@@ -194,13 +185,6 @@ function HeroSection() {
         </div>
       </div>
 
-      <div className="absolute bottom-10 left-0 right-0 flex justify-center">
-        <div className="flex items-center gap-3">
-          <span className="w-8 h-px bg-[#B17457]" />
-          <span className="font-sans text-[#D9D3C3]/62 text-[9px] tracking-[0.4em] uppercase">Interior Design Studio</span>
-          <span className="w-8 h-px bg-[#B17457]" />
-        </div>
-      </div>
     </section>
   );
 }
@@ -250,12 +234,12 @@ function OurStorySection() {
   return (
     <section ref={secRef} className="bg-[#0F0D0C] py-28 lg:py-40 overflow-hidden">
       <div className="max-w-[1400px] mx-auto px-5 lg:px-12">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-[5fr_7fr] gap-16 lg:gap-24 items-center">
 
           <div ref={imgWrap} className="relative overflow-hidden">
-            <img ref={imgRef} src={hero3} alt="Our story" draggable={false}
-              className="w-full h-[500px] lg:h-[640px] object-cover will-change-transform"
-              style={{ scale: 1.15 }} />
+            <img ref={imgRef} src={storyImg} alt="Our story" draggable={false}
+              className="w-full h-[360px] lg:h-[500px] object-cover object-top will-change-transform"
+              style={{ scale: 1.08 }} />
           </div>
 
           <div className="flex flex-col gap-7">
@@ -277,16 +261,11 @@ function OurStorySection() {
             </h2>
 
             <p ref={body1Ref} className="font-sans text-[#D9D3C3]/74 font-light text-sm leading-loose">
-              At DSquare Interiors, we believe every space has a story waiting to be told. Our approach blends creativity with functionality, designing interiors that reflect your personality and lifestyle.
+              Design is more than creating beautiful spaces—it's about building experiences that inspire every day. At Dsquare Design Company, we transform ideas into elegant, functional environments with over 15 years of architectural and interior design expertise.
             </p>
             <p ref={body2Ref} className="font-sans text-[#D9D3C3]/74 font-light text-sm leading-loose">
-              From modern homes to dynamic commercial environments, we create spaces that are not just visually appealing but deeply meaningful and practical.
+              From luxury residences and modern offices to cafés, commercial spaces, and hospitality projects, every design is crafted with creativity, precision, and purpose. We deliver spaces that reflect your vision while standing the test of time.
             </p>
-
-            <blockquote ref={quoteRef}
-              className="font-display text-[#D9D3C3]/65 text-base italic border-l-2 border-[#B17457]/40 pl-5 leading-relaxed">
-              "We don't just design spaces — we design experiences."
-            </blockquote>
           </div>
         </div>
       </div>
@@ -355,103 +334,6 @@ function PhilosophySection() {
   );
 }
 
-/* ── 4. Our Process ─────────────────────────────────────────────── */
-function ProcessSection() {
-  const secRef    = useRef(null);
-  const tagRef    = useRef(null);
-  const line1Ref  = useRef(null);
-  const line2Ref  = useRef(null);
-  const connRef   = useRef(null);
-  const stepsRef  = useRef([]);
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.from(tagRef.current, {
-        opacity: 0, y: 14, duration: 0.7, ease: "power3.out",
-        scrollTrigger: { trigger: tagRef.current, start: "top 85%", toggleActions: "play none none none" },
-      });
-      gsap.from([line1Ref.current, line2Ref.current], {
-        yPercent: 110, duration: 1.1, stagger: 0.12, ease: "power3.out",
-        scrollTrigger: { trigger: line1Ref.current, start: "top 85%", toggleActions: "play none none none" },
-      });
-      gsap.from(connRef.current, {
-        scaleX: 0, duration: 1.6, ease: "power2.out", transformOrigin: "left center",
-        scrollTrigger: { trigger: connRef.current, start: "top 78%", toggleActions: "play none none none" },
-      });
-      stepsRef.current.forEach((el, i) => {
-        if (!el) return;
-        gsap.from(el, {
-          opacity: 0, y: 30, duration: 0.9, delay: i * 0.12, ease: "power3.out",
-          scrollTrigger: { trigger: connRef.current, start: "top 78%", toggleActions: "play none none none" },
-        });
-      });
-    }, secRef);
-    return () => ctx.revert();
-  }, []);
-
-  return (
-    <section ref={secRef} className="bg-[#0F0D0C] py-28 lg:py-36">
-      <div className="max-w-[1400px] mx-auto px-5 lg:px-12">
-
-        <div className="text-center mb-20 lg:mb-28">
-          <div ref={tagRef} className="flex items-center justify-center gap-3 mb-6">
-            <span className="w-8 h-px bg-[#B17457]" />
-            <span className="font-sans text-[#B17457] text-[10px] tracking-[0.4em] uppercase">Our Process</span>
-            <span className="w-8 h-px bg-[#B17457]" />
-          </div>
-          <h2 className="font-display text-[#EDE9DF]"
-            style={{ fontSize: "clamp(2rem, 4vw, 3.5rem)", letterSpacing: "-0.01em" }}>
-            <div className="overflow-hidden pb-1">
-              <span ref={line1Ref} className="block">A Seamless Journey</span>
-            </div>
-            <div className="overflow-hidden">
-              <span ref={line2Ref} className="block">
-                From Concept to <em className="not-italic text-[#B17457]">Creation</em>
-              </span>
-            </div>
-          </h2>
-        </div>
-
-        {/* Desktop: horizontal timeline */}
-        <div className="hidden lg:block relative">
-          <div ref={connRef}
-            className="absolute top-7 left-[calc(10%+28px)] right-[calc(10%+28px)] h-px bg-[#B17457]/20"
-            style={{ transformOrigin: "left center" }}
-          />
-          <div className="grid grid-cols-5 gap-4">
-            {PROCESS_STEPS.map((step, i) => (
-              <div key={step.num} ref={(el) => (stepsRef.current[i] = el)}
-                className="flex flex-col items-center text-center gap-5">
-                <div className="relative z-10 w-14 h-14 rounded-full bg-[#1C1714] border border-[#B17457]/35 flex items-center justify-center flex-shrink-0">
-                  <span className="font-sans text-[#B17457] text-[9px] tracking-[0.2em]">{step.num}</span>
-                </div>
-                <h3 className="font-display text-[#EDE9DF] text-base tracking-wide">{step.name}</h3>
-                <p className="font-sans text-[#D9D3C3]/62 text-[11px] font-light leading-relaxed max-w-[130px]">{step.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Mobile: vertical */}
-        <div className="lg:hidden flex flex-col gap-8 relative">
-          <div className="absolute left-7 top-4 bottom-4 w-px bg-[#B17457]/20" />
-          {PROCESS_STEPS.map((step) => (
-            <div key={step.num} className="flex items-start gap-6">
-              <div className="w-14 h-14 rounded-full bg-[#1C1714] border border-[#B17457]/35 flex items-center justify-center flex-shrink-0 relative z-10">
-                <span className="font-sans text-[#B17457] text-[9px] tracking-[0.2em]">{step.num}</span>
-              </div>
-              <div className="flex flex-col gap-1 pt-4">
-                <h3 className="font-display text-[#EDE9DF] text-lg tracking-wide">{step.name}</h3>
-                <p className="font-sans text-[#D9D3C3]/62 text-xs font-light leading-relaxed">{step.desc}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-
-      </div>
-    </section>
-  );
-}
 
 /* ── 5. Stats ───────────────────────────────────────────────────── */
 function StatsSection() {

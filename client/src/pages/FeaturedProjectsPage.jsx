@@ -42,7 +42,7 @@ const pcPatilGallery  = toPhotos(import.meta.glob("../assets/projects/ca-officia
 const PROJECTS = [
   {
     slug: "jagtap",
-    name: "Jagtap",
+    name: "Jagtap Residency",
     type: "Residential",
     location: "Pune, Maharashtra",
     year: "2023",
@@ -63,7 +63,7 @@ const PROJECTS = [
   },
   {
     slug: "butte-patil",
-    name: "Butte Patil",
+    name: "Butte Patil Residency",
     type: "Residential",
     location: "Pune, Maharashtra",
     year: "2023",
@@ -84,7 +84,7 @@ const PROJECTS = [
   },
   {
     slug: "tura",
-    name: "TTura",
+    name: "TTura Restaurant ",
     type: "Residential",
     location: "Pune, Maharashtra",
     year: "2024",
@@ -126,7 +126,7 @@ const PROJECTS = [
   },
   {
     slug: "acai",
-    name: "Acai",
+    name: "Acai Restaurant",
     type: "Café & Hospitality",
     location: "Pune, Maharashtra",
     year: "2024",
@@ -147,7 +147,7 @@ const PROJECTS = [
   },
   {
     slug: "finup-consultancy",
-    name: "Finup Consultancy Office",
+    name: "Finup Corporate Office",
     type: "Commercial",
     location: "Pune, Maharashtra",
     year: "2024",
@@ -168,7 +168,7 @@ const PROJECTS = [
   },
   {
     slug: "ca-official",
-    name: "PC Patil",
+    name: "PC Patil Corporate office",
     type: "Commercial",
     location: "Pune, Maharashtra",
     year: "2024",
@@ -296,11 +296,33 @@ function HeroSection() {
 
 /* ── 2. Tabs ────────────────────────────────────────────────────── */
 function TabsSection({ active, onSwitch, tabsRef }) {
-  const lineRef = useRef(null);
-  const currentIndex = PROJECTS.findIndex((p) => p.slug === active);
+  const lineRef     = useRef(null);
+  const tabsViewRef = useRef(null); // overflow-hidden viewport
+  const tabsRowRef  = useRef(null); // inner flex row of buttons
+
+  const currentIndex = Math.max(0, PROJECTS.findIndex((p) => p.slug === active));
 
   const goPrev = () => { if (currentIndex > 0) onSwitch(PROJECTS[currentIndex - 1].slug); };
   const goNext = () => { if (currentIndex < PROJECTS.length - 1) onSwitch(PROJECTS[currentIndex + 1].slug); };
+
+  /* Slide the tab row so the active tab is always centred in the viewport */
+  useEffect(() => {
+    if (!tabsRowRef.current || !tabsViewRef.current) return;
+    const viewport = tabsViewRef.current;
+    const row      = tabsRowRef.current;
+    const btn      = row.children[currentIndex];
+    if (!btn) return;
+
+    const viewW  = viewport.offsetWidth;
+    const rowW   = row.scrollWidth;
+    const btnLeft = btn.offsetLeft;
+    const btnW   = btn.offsetWidth;
+
+    let x = -(btnLeft - viewW / 2 + btnW / 2);
+    x = Math.min(0, Math.max(x, -(rowW - viewW)));
+
+    gsap.to(row, { x, duration: 0.45, ease: "power3.out" });
+  }, [currentIndex]);
 
   useEffect(() => {
     gsap.from(lineRef.current, {
@@ -310,7 +332,7 @@ function TabsSection({ active, onSwitch, tabsRef }) {
   }, []);
 
   return (
-    <div ref={tabsRef} className="bg-[#0F0D0C] sticky top-0 z-50 border-b border-[#D9D3C3]/8">
+    <div ref={tabsRef} className="bg-[#0F0D0C] sticky top-0 z-50">
       <div ref={lineRef} className="h-px w-full bg-[#D9D3C3]/8" style={{ transformOrigin: "left center" }} />
 
       {/* ── Mobile: arrow nav ── */}
@@ -351,26 +373,60 @@ function TabsSection({ active, onSwitch, tabsRef }) {
         )}
       </div>
 
-      {/* ── Desktop: scrollable tabs ── */}
-      <div className="hidden lg:block max-w-[1400px] mx-auto px-12">
-        <div className="flex items-stretch overflow-x-auto scrollbar-none">
-          {PROJECTS.map((p) => (
-            <button
-              key={p.slug}
-              onClick={() => onSwitch(p.slug)}
-              className={`relative flex-shrink-0 px-10 py-5 font-sans font-bold text-[10px] tracking-[0.3em] uppercase transition-colors duration-300 ${
-                active === p.slug
-                  ? "text-[#EDE9DF]"
-                  : "text-[#D9D3C3]/48 hover:text-[#D9D3C3]/80"
-              }`}
-            >
-              {p.name}
-              {active === p.slug && (
-                <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#B17457]" />
-              )}
-            </button>
-          ))}
+      {/* ── Desktop: scrollable tabs with arrows ── */}
+      <div className="hidden lg:flex items-stretch max-w-[1400px] mx-auto px-12 gap-2">
+
+        {/* Left arrow */}
+        {currentIndex > 0 ? (
+          <button onClick={goPrev} aria-label="Previous project"
+            className="flex-shrink-0 self-center w-9 h-9 flex items-center justify-center border border-[#D9D3C3]/22
+                       text-[#D9D3C3]/65 hover:border-[#B17457] hover:text-[#B17457] transition-all duration-300">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M13 7H1M6 2L1 7L6 12" stroke="currentColor" strokeWidth="1.3"
+                strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </button>
+        ) : (
+          <span className="flex-shrink-0 w-9" />
+        )}
+
+        {/* Tabs viewport (clips overflow, no manual scroll) */}
+        <div ref={tabsViewRef} className="overflow-hidden flex-1">
+          {/* Inner row — translated by GSAP to follow active tab */}
+          <div ref={tabsRowRef} className="flex items-stretch will-change-transform">
+            {PROJECTS.map((p) => (
+              <button
+                key={p.slug}
+                onClick={() => onSwitch(p.slug)}
+                className={`relative flex-shrink-0 px-10 py-5 font-sans font-bold text-[10px] tracking-[0.3em] uppercase transition-colors duration-300 ${
+                  active === p.slug
+                    ? "text-[#EDE9DF]"
+                    : "text-[#D9D3C3]/48 hover:text-[#D9D3C3]/80"
+                }`}
+              >
+                {p.name}
+                {active === p.slug && (
+                  <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#B17457]" />
+                )}
+              </button>
+            ))}
+          </div>
         </div>
+
+        {/* Right arrow */}
+        {currentIndex < PROJECTS.length - 1 ? (
+          <button onClick={goNext} aria-label="Next project"
+            className="flex-shrink-0 self-center w-9 h-9 flex items-center justify-center border border-[#D9D3C3]/22
+                       text-[#D9D3C3]/65 hover:border-[#B17457] hover:text-[#B17457] transition-all duration-300">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M1 7H13M8 2L13 7L8 12" stroke="currentColor" strokeWidth="1.3"
+                strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </button>
+        ) : (
+          <span className="flex-shrink-0 w-9" />
+        )}
+
       </div>
     </div>
   );

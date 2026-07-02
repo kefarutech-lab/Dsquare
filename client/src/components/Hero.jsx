@@ -192,12 +192,6 @@ export default function Hero() {
                 <path d="M1 7H13M8 2L13 7L8 12" stroke="white" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </Link>
-            <Link
-              to="/contact"
-              className="inline-flex items-center bg-[#EDE9DF] text-[#0F0D0C] font-sans text-[10px] sm:text-xs tracking-[0.15em] sm:tracking-[0.2em] uppercase px-4 sm:px-7 py-3.5 sm:py-4 hover:bg-white transition-colors duration-300 whitespace-nowrap"
-            >
-              Start a Project
-            </Link>
           </div>
         </div>
       </div>
